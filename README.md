@@ -4,5 +4,6 @@ Sandbox Repository for personal projects, including notes to research, links to 
 | Section | Description |
 |---------|-------------|
 | [Safety_standards](Safety_standards/README.md) | Documentation and resources for safety standards and regulatory requirements in implementing AI solutions for industrial and automotive applications |
-| [DL_ML](DL_ML/README.md) | Deep Learning and Machine Learning resources and projects |
+| [DL_ML](DL_ML/README.md) | Notes, experiments, references to Deep Learning and Machine Learning based topics, related to Perception in SDCs |
+| [Non_ML](Non_ML/README.md) | Notes, experiments, references to non ML based (classical) topics, related to Perception in SDCs |
 | [Python](Python/README.md) | Python programming concepts and examples |
