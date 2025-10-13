@@ -1,9 +1,0 @@
-https://distill.pub/2021/understanding-gnns/#learning
-https://distill.pub/2021/gnn-intro/
-https://distill.pub/2020/selforg/
-https://www.youtube.com/watch?v=zCEYiCxrL_0
-https://www.youtube.com/watch?v=me3UsMm9QEs
-https://www.youtube.com/watch?v=fOctJB4kVlM
-
-conway's game of life
-
