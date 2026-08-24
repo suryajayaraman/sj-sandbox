@@ -47,12 +47,15 @@
 - 8 categories - road curb, cross walk, double white, double yellow, double other color, single white, single yellow, singleo other color
 - `other categories` are ignored during evaluation
 - Additional attribute - continuty (full or dashed) and direction (parallel vs perpendicular)
+- Optimal dataset Scal F-measure (ODS-F) for each category using [Structured Edge Detection toolbox]()
+- Morphological thinnning for each score threshold during evaluation
 
 ### Drivable Area
 - `Directly driveable area` - current lane, and where driver has right of way
 - `Alternative driveable area` - adjacent lane, need to change lanes
 - In cities streets, highways, where traffic is regulated, driveable area is within lane, and don't overlap with vehicles / objects
 - In residential aarea, lanes are sparse
+- 2 foreground classes withg `mean IoU` as metric
 
 ### Semantic Instance segmentation
 - Instance segmentation for reference image in 10k videoes, randomly sampled from dataset
@@ -86,6 +89,36 @@ Two experiments on object detection and semantic segmentation
 Explored ways to use low level annotations (image based) for complicated tasks (multi object tracking and segmentation)
 
  ### Homogenous Multitask learning
- - Effect of jointly training l
+ - Explored effects of jointly training tasks with similar outputs - lane marking and drivaable area
+ - DLA-34 as based model with 3x3 and 1x1 convolution heads, to predict output (4x smaller than input), then bilinear interpolation
+ - `Weighted cross-entropy` loss with foreground weight of 10 for lane marking heads + `gradient based NMS (Non maximal suppression)` for post-processing
+ - **When dataset is small (10K images), jointly training for segmentation, improves lane marking results by 10%, but the gains are miminal, as dataset scales**
+ - **Hypothesis: Lane marking and Driveable area estimation are similar tasks; and dont have much new information to bring after some examples**
 
+### Cascaded Multitask learning
+- Certain tasks like object tracking and instance segmentation can use simple tasks `predictions` - referrefd to as Cascaed Multitask Learning
+- Question to answer: **how to allocate resources between simple tasks and complicated ones**
+#### Object detection and Instance segmemntation
+- Object detection (70k) images, instance segmentation (7k) images
+- Take a Mask RCNN model, using Resnet as backbone, and train both OD and IS in `batch level round robin manner`
+- Instance segmentation results improve >10%, because of this, due to **learning object appearance features; localization from detection dataset, with much richer diversity of images, object examples**
 
+####  MOT and object detection
+- 278k training frames in MOT (1400 videos), 70k OD frames. **Joint training improves MOT results, with slight decrease in identity switch**
+
+#### Semantic segmentation with other tasks
+- Semantic segmentation + object detection gives better results, while Semantic segmentation + lane marking, driveable area estimation, gives poorer results
+
+### Heterogenous Multitask learning
+- Joint training for multiple object tracking and segmentation (MOTS), a downstream task to object detection, instance segmentation and multiple object tracking
+- MOTS annotations are difficult (instance segmentation results for each frame), 12k training frames from 60 videos
+- Ablation study by using annotations from OD (70k frames), MOT set (278k frames), IS (7k images)
+- metric `MOTSA (Multi object tracking and segmentation accuracy)`, `Multi object tracking and segmentation precision`
+- Instead of training from scratch, use fine-tuning models trained on lower level tasks, improves performance. Last experiment is to fine-tune jointly trained `detection and object tracking` model on MOTS dataset. **Except for false positive and Identity switch, this model performs better on all other metrics**
+
+## Appendix
+
+## Reference papers
+- [The Natural Language Decathlon:
+Multitask Learning as Question Answering](https://arxiv.org/pdf/1806.08730)
+- [The Need for Biases in Learning Generalizations Tom Michael Mitchell Published 2007 Computer Science, Philosophy](https://www.semanticscholar.org/paper/The-Need-for-Biases-in-Learning-Generalizations-Mitchell/6cf35ec34efa592f83e3a1b748aea14957fc784a)
