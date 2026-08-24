@@ -1,0 +1,13 @@
+# Things to look for in a dataset
+- sensors for which data is collected
+	- resolution of sensor data
+	- frequency
+	- duration of data
+- annotations quantity
+- data synchronized?
+- weather conditions - snow, rain
+- times of the day
+- % of duration of day vs night
+- Object detection
+	- occlusion, truncation instances count
+	- no categories
