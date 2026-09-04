@@ -1,0 +1,19 @@
+[project]
+name = "sj-sandbox"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "suryajayaraman", email = "suryajayaraman97@gmail.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "pre-commit>=4.6.2",
+]
+
+[project.scripts]
+sj-sandbox = "sj_sandbox:main"
+
+[build-system]
+requires = ["uv_build>=0.12.9,<0.13.0"]
+build-backend = "uv_build"
