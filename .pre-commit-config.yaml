@@ -1,0 +1,21 @@
+repos:
+  # General fixes including trailing whitespace removal
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0  # Update to the latest version if needed
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+
+  # Python Code Formatter (Ruff or Black)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.0
+    hooks:
+      - id: ruff-format
+        types: [python]
+
+  # C++ Code Formatter (Clang-Format)
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: v19.1.0
+    hooks:
+      - id: clang-format
+        types_or: [c, c++]
