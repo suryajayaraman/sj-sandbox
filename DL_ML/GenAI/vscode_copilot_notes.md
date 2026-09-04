@@ -1,8 +1,56 @@
 # GitHub Copilot VSCode notes
 
-## Custom instructions at project level
-- .github/copilot-instructions.md
+## How Prompts are used in VSCode
+- If you compile a system prompt like "Hello World" in GHC, copilot sends a prompt like below (context window gets added)
+- For new messages, all the below and responses from model, are appended and sent again
 
+```md
+<!-- Very generic identity and rules -->
+# System Prompt
+## Core functionality and global rules
+you're an intelligent AI coding assistant
+
+<!-- This i very specific to model -->
+## general instructions (model specific)
+Never print code block with file changes
+
+## Tool use instructions
+Dont call run in terminal command, multiple times in parallel
+
+## Output format instructions
+How to format output in chat for toeknization of things like file links
+
+-------------------------------------
+
+<!-- Next, uer prompt gets added -->
+# User prompt
+## Environment Info
+OS info etc
+
+## Workspace infor
+project
+    Folder1
+        File1
+        File2
+    Folder2
+
+-------------------------------------
+
+<!-- 2nd User prompt, containing context window -->
+# User prompt2
+## Contact infor
+Current date, time; list of open terminals
+
+## Editor context
+any files, user has added to chat
+
+## User request
+Hello World
+```
+
+
+### Intructions file
+- .github/copilot-instructions.md
 ```md
 # Sample Project general coding guidelines
 
@@ -22,27 +70,82 @@
 - Add error handling for user inputs and API calls
 ```
 - `/init` smart action generates copilot instructions file based on project
+-  General project structure, patterns that be used, at project level. (custom instructions get added in context window), **get added at last, to Agent System prompt**
+- Can have multiple instructions file. **copilot instructions is the last file to get added, in System prompt**
 - [Reference](https://code.visualstudio.com/docs/copilot/getting-started)
+- Sample structure
+```md
+# Copilot instructions for <project>
+## Steps to build project
+## Naming conventions
+## Source file conventions
+## Formatting
+<!-- refer to clang-formatting and other tools -->
+## Copyright headers
+## Code Review focus
+## Acronyms
+## Documentation and comments guidelines
+```
+
+### prompt files
+- Gets added, before Context info in `User prompt`
+- User request gets modified to `Follow instructions in []() - Hello World`
 
 
 ## Custom agents
 - .github/agents/<agentName.agent.md> file
+- Way to specify overriding instructions to defautl Agent bheaviour
+- `Plan` mode is example of custom agent, intended to research, plan, not implement
+- **Custom agent instructions, gets added after custom instructions**
 
 ```markdown
-name: abc
-description: abc
-tools: ['vscode/askQuestions', 'vscode/vscodeAPI', 'read', 'agent', 'search', 'web']
-
 ---
 name: 'Reviewer'
-description: 'Review code for quality and adherence to best practices.'
+description: 'Review code for quality and adherence to best practices.disable-mode-invocation: true
 tools: ['vscode/askQuestions', 'vscode/vscodeAPI', 'read', 'agent', 'search', 'web']
+handoffs:
+    - label: name of handoff
+      agent: agent
+      prompt: 'Start Implementation'
+      send: true
 ---
 # Code Reviewer agent
 
 You are an experienced senior developer conducting a thorough code review. Your role is to review the code for quality, best practices, and adherence to [project standards](../copilot-instructions.md) without making direct code changes.
 
 When reviewing code, structure your feedback with clear headings and specific examples from the code being reviewed.
+
+<rules>
+- rule 1
+</rules>
+
+<workflow>
+
+## 1. Discovery
+<!-- Focus on high level concepts; check for feasibility -->
+<!-- Use subagents -->
+<research_instructions> </research_instructions>
+
+## 2. Alignment
+- Use #tool:vscode/askQuestions to ask clarifying questions
+
+## 3. Design
+- Once context is clear, draft comprehensive implementation plan per  <plan_style_guide>
+
+## 4. Refinement
+- Show draft to user. Clarify doubts; atlernatives to explore; Once approval given, acknowledge, user able to see handoff buttons
+- Keep iterating until explicit approval, or handoff
+
+</workflow>
+
+
+<plan_style_guide>
+## Plan
+**Steps**
+**Verification**
+**Decisions**
+</plan_style_guide>
+
 
 ## Analysis Focus
 - Analyze code quality, structure, and best practices
@@ -55,13 +158,15 @@ When reviewing code, structure your feedback with clear headings and specific ex
 - DO NOT write or suggest specific code changes directly
 ```
 
+
 ## Smart actions
-- Enter /init to generate a base file
+- Enter `/init` to generate a instructions file
 - /prompt for creating reusable prompts
 - /agents to manage agents
-- /skills to manage skills for agents
+- `/skills` to manage skills for agents
 - mcp.json to connect to external systems (APIs, databases)
 - To generate commit message
+- `/generate` from awesome copilot structured autonomy generate to generate implementation, provided a plan md file. This generates all content, in single PR, and with testable commits for each step
 
 ## Best practices
 - Keep it concise, as these files are loaded on each interaction. Focus on stuff that AI can't infer from code, such as arch decisions, env setup etc
@@ -94,12 +199,11 @@ When reviewing code, structure your feedback with clear headings and specific ex
     - Context pollution - keep only relevant content in chat, start new one if required
     - Delete old chats (unrelevant)
     - `Subagents` - hint AI to perform research, exploration in isolation, to avoid spamming current context
-    - Choose right session type 
+    - Choose right session type
         - local sessions for quick tasks and immediate attention
         - background tasks for local and isolated from main context
         - cloud sessions for collaborative work
     - Multiple sessions in parallel using `Agents sessions view`
-
-## Agents
-
-
+- `Context rot` - as contenxt window grows, model peformance drops significantly
+- Dont worry about location of prompty / custom instruction file
+- `Premimum planning; thrifty implementation` - generate a markdown file, containing all changes to be made -  this can be done by premimum model, but implementation can be done by model, with lesser premimum requests

@@ -1,0 +1,33 @@
+# Agent orchestration Example
+- [Reference](https://www.youtube.com/watch?v=-BhfcPseWFQ&list=PPSV&t=2s)
+- Generally, users call the agents, manually (either in local, or running in background)
+- Recent updates to Github Copilot CLI and VSCode enables, you to call general purpose agents (associated with each model)from another agent - referred to as sub-agents
+- General roles
+    - Orchestrator
+    - Planner
+    - Designer
+    - Coder
+- Models, that are currently good at it (Gemini 3, Sonnet, GPT5.2, GPT5.2-Codex)
+- Orchestrator
+    - tools: ['memory', 'agent']
+    - Understand complex project and delete tasks to other agents
+    - Rules
+        - Tell subagents what to do, never how to do
+        - Never implement code
+        - Always end your prompts by asking sub-agents by asking sub-agents what they think
+    - **Need to provide exact agent names to Orchestrator**
+    - Very agentic behaviour
+- Planner
+    - mostly uses all tools
+    - GPST5.2
+    - Can be simple prompts
+- Coder
+    - context7* (MCP server to read all docs)
+    - GPT5.2-Codex model (good at coding)
+    - Mention model to question everything, even if other model provides instructions
+- Designer
+    - UI/ UX changes
+    - Gemini models, best at this
+- Things to improve
+    - Pass on the plan to Coder agent
+    - Delegate work of coder to multiple sub-agents and run in parallel, than single agent
