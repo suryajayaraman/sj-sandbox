@@ -193,7 +193,7 @@ ICudaEngine* engine = runtime->deserializeCudaEngine(modelData.data(), modelData
 - Implement pre-processing in C++, move data from CPU to GPU buffers
 - Allocate CUDA memory for input, output buffers, generate a list of engine bindings.
 - For Image processing, (resize, normalize, ToTensor operations, format conversion like HWC to CHW)
-- For Point clouds, grouping into voxels, finding voxel mean, 
+- For Point clouds, grouping into voxels, finding voxel mean,
 - `cudaMemcpyAsync` function, enables asynchronous copy b/w devices host and device (**host = CPU, Device = GPU**). There is synchronous version as well
 
 ```cpp
@@ -212,11 +212,11 @@ cudaMemcpyAsync(input_mem, input_buffer.get(), input_size, cudaMemcpyHostToDevic
 ```
 
 ### Generate Engine and execution context
-- The engine holds the optimized model, but you must manage additional states for intermediate activations to perform inference. 
+- The engine holds the optimized model, but you must manage additional states for intermediate activations to perform inference.
 - A TensorRT execution context encapsulates execution state such as persistent device memory for holding intermediate activation tensors during inference.
 - This object holds intermediate activations and allows an engine to be used for multiple overlapping inference tasks.
 
-- Set 
+- Set
 ```cpp
 // create context
 IExecutionContext *context = engine->createExecutionContext();
@@ -358,19 +358,19 @@ Util::checkCudaErrorCode(cudaStreamDestroy(inferenceCudaStream));
 TensorRT supports different precision modes for inference, allowing trade-offs between speed and accuracy.
 
 - **FP32 (Full Precision)**
-    - Default precision mode. 
+    - Default precision mode.
     - Highest accuracy, slowest inference
     - No specific precision flags or calibrators for FP32.
 
 - **FP16 (Half Precision)**
-    - FP16 uses 16-bit floating-point numbers. 
+    - FP16 uses 16-bit floating-point numbers.
     - Good balance between speed and accuracy, often resulting in significant speedups.
     - `BuilderFlag::kFP16` flag  required during `plan` generation
-    - `Engine` class also supports FP16 output 
+    - `Engine` class also supports FP16 output
 
 - **INT8 (8-bit Integer Precision)**
     - INT8 precision uses 8-bit integers
-    - Fastest inference speeds and lowest memory usage. 
+    - Fastest inference speeds and lowest memory usage.
     - Generally incurs some accuracy loss due to reduced dynamic range.
     - Need **calibration data** to enable INT8 inference
 
@@ -417,12 +417,12 @@ Precision optimization changes how numbers are stored and computed in the GPU. T
      - Uses 32 bits: 1 bit for sign, 8 bits for exponent, 23 bits for decimal part
      - Can represent numbers from ±1.18 x 10⁻³⁸ to ±3.4 x 10³⁸
      - Takes more memory and processing power
-   
+
    * **FP16 (16-bit):** Like storing a number with 3 decimal places (3.142)
      - Uses 16 bits: 1 bit for sign, 5 bits for exponent, 10 bits for decimal part
      - Can represent numbers from ±6.10 x 10⁻⁵ to ±6.5 x 10⁴
      - Takes half the memory and processing power
-   
+
    * **INT8 (8-bit):** Like storing whole numbers from -128 to 127
      - Uses 8 bits: 1 bit for sign, 7 bits for the number
      - Requires "scaling" to represent decimals (like multiplying everything by 100)
@@ -433,7 +433,7 @@ Precision optimization changes how numbers are stored and computed in the GPU. T
      - With FP32, you need 3 trips to move 3 numbers
      - With FP16, you can move 6 numbers in same 3 trips
      - With INT8, you can move 12 numbers in same 3 trips
-   
+
    * **Processing Benefits:**
      - Think of GPU as a factory with multiple workers (cores)
      - Each worker can process either:
@@ -487,7 +487,7 @@ context.setInputShape("foo", Dims{3, {3, 150, 250}})
 
 
 ### Polygraphy
-- Toolkit designed to assist in running and debugging deep learning models in TensorRT and other frameworks. 
+- Toolkit designed to assist in running and debugging deep learning models in TensorRT and other frameworks.
 - Includes a Python API and a command-line interface (CLI) built using this API
 - It can
      - Convert models to formats like TensorRT engines with post-training quantization (API, CLI).

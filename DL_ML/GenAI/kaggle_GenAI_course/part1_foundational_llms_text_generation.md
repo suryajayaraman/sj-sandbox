@@ -43,7 +43,7 @@ relevant to other words in the sequence.
 - Attention scores are calculated using dot product cosine similarity b/w tokens (query and key)
 - scores are normalized and divided by dk (length of attention vector) and softmax-ed
 - Output is weighted sum of normalized scores and values
-- Multi-head self attention helps model learn 
+- Multi-head self attention helps model learn
     -   compltext language patterns, long range dependencies
     - multiple interpretations of input
 
@@ -92,7 +92,7 @@ reasoning steps before arriving at a final answer.
 - **Fine-tuning** on datasets specifically designed for reasoning tasks is also crucial
 - **Instruction tuning**, where the model is trained to follow natural language
 instructions, further enhances its ability to understand and respond to complex reasoning
-prompts. 
+prompts.
 - **Reinforcement Learning from Human Feedback (RLHF)** refines the model’s outputs
 based on human preferences, improving the quality and coherence of its reasoning. RLHF
 helps in reward models that score reasoning ability as well as “helpfulness.”
