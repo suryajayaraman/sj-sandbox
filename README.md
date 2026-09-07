@@ -3,7 +3,13 @@ Sandbox Repository for personal projects, including notes to research, links to 
 
 | Section | Description |
 |---------|-------------|
-| [Safety_standards](Safety_standards/README.md) | Documentation and resources for safety standards and regulatory requirements in implementing AI solutions for industrial and automotive applications |
-| [DL_ML](DL_ML/README.md) | Notes, experiments, references to Deep Learning and Machine Learning based topics, related to Perception in SDCs |
-| [Non_ML](Non_ML/README.md) | Notes, experiments, references to non ML based (classical) topics, related to Perception in SDCs |
-| [Python](Python/README.md) | Python programming concepts and examples |
+| [Common](common/README.md) | Documentation and resources for basic concepts, for both classical and deep learning based approaches to Perception |
+| [Fusion](fusion/README.md) | Sensor, Data fusion techniques |
+| [Datasets](datasets/README.md) | Autonomous driving datasets and related resources |
+| [Models](models/README.md) | Model architectures
+| [Object Detection](object_detection/README.md) | Notes, experiments, references to 2D, 3D Object detection |
+| [Object Tracking](object_tracking/README.md) | Notes, experiments, references to 2D, 3D Object tracking |
+| [Programming](programming/README.md) | Programming concepts, notes |
+| [Safety Standards](safety_standards/README.md) | Safety standards and regulations for autonomous driving |
+| [Sensing](sensing/README.md) | Sensing techniques, Sensors understanding |
+| [Solutions](solutions/README.md) | Solutions and implementations, related to Perception in SDCs |
