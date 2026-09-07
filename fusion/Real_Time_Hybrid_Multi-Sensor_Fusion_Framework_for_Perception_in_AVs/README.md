@@ -47,5 +47,5 @@ Kalman Filter (KF) serves as a state estimation algorithm with the following cha
 Advanced variants include:
 - Unscented Kalman Filter (UKF)
 - Cubature Kalman Filter (CKF)
-  
+
 These variants use sigma point methods to approximate the distribution rather than the model itself, providing better results for highly non-linear cases at increased computational cost.

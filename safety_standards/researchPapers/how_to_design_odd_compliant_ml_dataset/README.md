@@ -12,7 +12,7 @@
 ### Certification Guidelines
 - Multiple working groups, for introducing standards related to certifying ML-based systems for safety critical applications (References 1-5)
 - Rely on existing standards (ED-79/ARP-4754A [6], for integration of ML-based function at subsystem level, the ED-12C/DO-178C [7] and the ED-80/DO-254 [8], related to deployment of the ML models onto respectively software and hardware items)
-- Data-driven development introduces new processes: 
+- Data-driven development introduces new processes:
     - Data management process - produce dataset where internal features match intended function (must be designed to fit ODD - Operational Design Domain)
 
 ### Motivation
@@ -97,5 +97,3 @@
 
 
 ## Image Level ODD
-
-

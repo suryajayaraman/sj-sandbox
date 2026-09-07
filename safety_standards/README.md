@@ -1,10 +1,7 @@
 # Safety_standards & Papers
-Blogs related to standards and research papers related to Autonomous driving safety
+Related to standards and research papers related to Autonomous driving safety
 
 ## [How to design ODD compliant ML dataset](researchPapers/how_to_design_odd_compliant_ml_dataset/README.md)
-
-
-
 
 
 ## References

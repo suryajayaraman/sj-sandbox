@@ -5,7 +5,7 @@
 - Role specific behavior - instructions, tools, context
 - Handoffs b/w agents
 - Agents can leverage MCPs
-- standard migrations rules apply automatically 
+- standard migrations rules apply automatically
 - Controlled scope, limited at each agent level
 - Use models better reasoning, for code changes suggestion (create an md file), smaller / faster model for actual code changes
 
@@ -68,13 +68,13 @@
 name:
 description
 tools : ['search', 'fetch', 'githubRepo', 'todos']
-model: 
+model:
 handoffs:
     - label: Enviornment Setup
       agent: Endivonrment_Setup_agent
       prompt: Planning complete. Being einvronment setup phase - Analyse README.md and pyprooject.toml for environment requirements. Check for existing condac envrionemnts matching required python version. Create of arctivate pappropriate environment. Install all pdendencies from pyporject.toml and requirments. txt.  Validate all package imports. After environment setup is validates, automatically hand off to Codebsase_Analyaysis_aGent
       send: true
-    
+
 
 ```
 
