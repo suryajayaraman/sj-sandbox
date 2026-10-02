@@ -27,8 +27,18 @@
 - Measure of central tendency (mean, median, mode)
 - E[X] = Expected vales of Random variable average Value on infinite no. of trials. If all values have equal, Prob then E[x] = mu[x]
 - Var[x] = how much values are for from mean. Variation among values themselves. Variance is affected by outliers.
+- Central limit theorem states that, if we take a large number of samples from any distribution, the mean of those samples will be approximately Gaussian distributed. This is why Gaussians are so common in nature and in engineering. Even if the original (population) distribution is not Gaussian, the mean of a large number of samples (sample distribution) from that distribution will be Gaussian.
+- Gaussians are used - computationally efficient, easy to work with, nice math properties. f(x) proportional to e^-x2. Sum of Gaussians = Gaussian, Product of Gaussians = Gaussian.
 - Gaussians allow us to implement the algorithms used in the discrete Bayes filter to work in continuous domains. Many tracking and filtering problems can be solved with a continuous, unimodal filter. The Kalman filter is one such filter.
-
+- Gaussian limitations
+    - Assumes data is normally distributed
+    - Real world sensor errors are not exactly Gaussian, but they are often close enough that the Gaussian assumption is a good approximation.
+    - Kalman filter math is for idealized world, where sensor error is assumed to be Gaussian.
+    - If the assumption is violated, the filter may not perform well. Consumers need to be aware of this limitation. Generally, 3sigma limit is used to differentiate noise from actual signal.  For example, in NASA mission,they had to use 5sigma limit, as the sensor noise was not Gaussian, and they were getting false positives. Hence, they had to use a more conservative limit to avoid false positives.
+- Statistical ways to measure distribution (deviation from exponential distribution)
+    - Non symmetric nature, around the mean, is measured by skew
+    - kurtosis measures how different the tails are, compared to a Gaussian distribution
+    - As sample size increases, skew and kurtosis approach 0.
 
 ## Things to consider when using Kalman filters for a problem
 - Residual = actual measurement - predicted measurement. **Smaller residuals = better performance**
@@ -43,3 +53,6 @@
     - Filter compute scales as O(n^n) where n = state dimension, curse of dimensionality. (example: for 100m x 100m area, with 1m resolution, we have 10,000 states. If we have 10 dimensions, we have 10^40 states. This is not feasible to compute.)
     - Multi-modal might not be desirable in all cases. (example: if we're trying to estimate the position of a robot, we might not want a solution like "robot has 40% chance of being at x location; and 60% chance of being at y location.")
 - If we have control commands for prediction, better to incorporate them into the prediction step.
+- Check assumptions
+    - Is actual sensor noise Gaussian? If it deviates a lot, we might need to use a different filter (eg: particle filter).
+    - Measurement must not be correlated with time.
