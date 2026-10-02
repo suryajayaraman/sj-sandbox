@@ -6,13 +6,14 @@
 
 ## Points to remember
 - Sensors are noisy, inaccurate
-- 2 sensors even if inaccurate, is important.
+- If you have one sensor giving accurate measruements, and one giving less accurate measurements, then combining both sensors even if inaccurate, is important. **But both measrurements should be independent of each other**
 - When there are two data sources of the same quantity with each having eq probability of giving values above and below ground truth, then actual value lies b/w 2 errorbars of datasources **ERROR BAR CONCEPT**
 
 ![error_bars_concept](images/error_bars_concept.PNG)
 
-- Prediction step (domain knowledge) is important. (Pg: 28 trend plots)
+- Prediction step (domain knowledge) is important. (Pg: 28 trend plots). **Need to treat prediction as a source of data (measurement) as well, and combine it with actual measurements to get better estimate of actual state.**
 - **Residual concept in gh filter** (Pg:30)
+- Residual = actual measurement - predicted measurement. Most cases, the final estimate will be a weighted sum of the residual and the prediction.
 
 ![gh_filter_prediction_correction_intuition](images/gh_filter_prediction_correction_intuition.PNG)
 
