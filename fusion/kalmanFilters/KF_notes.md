@@ -1,0 +1,45 @@
+
+## Summary of Kalman filter concepts
+- System = object that we want to estimate. State = current configurabiotn of the system, that is of interest
+- Measurement = measrued value of the system. State estimate =filter's estimate of the state
+- Residual = actual measurement - predicted measurement. **Smaller residuals = better performance**
+- Prior (probability distribution) = state estimated before incorporating any measurement
+- Frequentists approach: treat the state as a fixed but unknown quantity.
+    - As you get more data, you refine your estimate of the state (no relevance to priori information). The estimate is a single value, not a distribution.
+    - Evaluating the evidence under a hypothesis
+- Bayesian approach
+    - Treat the value as a random variable with a probability distribution. (belief about the state). As you get more data, you refine your estimate of the state (incorporating prior information). The estimate is a probability distribution, not a single value.
+    - Update belief based as you get more data
+- If its a probability distribution, sum of all probabilities = 1.0. Likelihood does not sum to 1.0, as its not a probability distribution.
+- posterior = normalized (prior * likelihood)
+- Bayesian approach: treat the state as a random variable with a probability distribution. The prior is the probability distribution of the state before incorporating any measurement. The posterior is the probability distribution of the state after incorporating a measurement.
+- Discrete Bayes filter pseudocode
+    - Initialization
+        - Initialize our belief in the state
+    - Predict
+        - Based on the system behavior, predict state for the next time step
+        - Adjust belief to account for the uncertainty in prediction
+    - Update
+        - Get a measurement and associated belief about its accuracy
+        - Compute how likely it is the measurement matches each state
+        - Update state belief with this likelihood
+- Random variable (RV), if O/P of event has multiple outcomes each with own prob, it constitute an RV. Discrete/ cont. based on sample.
+- Measure of central tendency (mean, median, mode)
+- E[X] = Expected vales of Random variable average Value on infinite no. of trials. If all values have equal, Prob then E[x] = mu[x]
+- Var[x] = how much values are for from mean. Variation among values themselves. Variance is affected by outliers.
+- Gaussians allow us to implement the algorithms used in the discrete Bayes filter to work in continuous domains. Many tracking and filtering problems can be solved with a continuous, unimodal filter. The Kalman filter is one such filter.
+
+
+## Things to consider when using Kalman filters for a problem
+- Residual = actual measurement - predicted measurement. **Smaller residuals = better performance**
+- Predict the next measurement and rate of change, based on current estimate and how much we think it will change.
+- Cases to consider
+    - Incorrect initial estimate of state
+    - Large process noise
+    - Large measurement noise
+    - Bad measurement recovery
+- Need to predict state change (x_dot), even if we dont observe it (eg: in a car, we might predict its position based on velocity and acceleration). `h` in g-h filter indicates how much we trust the predicted estimate vs estimate from measurement. It indicates how much we respond to state change, which we are not modelling. **g-h values indicate a trade-off between how quickly we respond to measurements and how accurate we are.**
+- Discrete Bayes filter - discrete, multimodal, but has drawbacks
+    - Filter compute scales as O(n^n) where n = state dimension, curse of dimensionality. (example: for 100m x 100m area, with 1m resolution, we have 10,000 states. If we have 10 dimensions, we have 10^40 states. This is not feasible to compute.)
+    - Multi-modal might not be desirable in all cases. (example: if we're trying to estimate the position of a robot, we might not want a solution like "robot has 40% chance of being at x location; and 60% chance of being at y location.")
+- If we have control commands for prediction, better to incorporate them into the prediction step.
