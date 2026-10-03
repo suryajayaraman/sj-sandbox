@@ -28,7 +28,7 @@
 - E[X] = Expected vales of Random variable average Value on infinite no. of trials. If all values have equal, Prob then E[x] = mu[x]
 - Var[x] = how much values are for from mean. Variation among values themselves. Variance is affected by outliers.
 - Central limit theorem states that, if we take a large number of samples from any distribution, the mean of those samples will be approximately Gaussian distributed. This is why Gaussians are so common in nature and in engineering. Even if the original (population) distribution is not Gaussian, the mean of a large number of samples (sample distribution) from that distribution will be Gaussian.
-- Gaussians are used - computationally efficient, easy to work with, nice math properties. f(x) proportional to e^-x2. Sum of Gaussians = Gaussian, Product of Gaussians = Gaussian.
+- Gaussians are used - computationally efficient, easy to work with, nice math properties. f(x) proportional to e^-x2. Sum of Gaussians = Gaussian, Product of Gaussians = Gaussian (assuming its normalized).
 - Gaussians allow us to implement the algorithms used in the discrete Bayes filter to work in continuous domains. Many tracking and filtering problems can be solved with a continuous, unimodal filter. The Kalman filter is one such filter.
 - Gaussian limitations
     - Assumes data is normally distributed
@@ -39,6 +39,14 @@
     - Non symmetric nature, around the mean, is measured by skew
     - kurtosis measures how different the tails are, compared to a Gaussian distribution
     - As sample size increases, skew and kurtosis approach 0.
+- KF is just bayes filter with Gaussians. (Gaussians because, they approximate most sensor measurement errors)
+    - KG is just weighted average between prediction and measurement
+    - Bad process covariance, bad initial estimate, Bad initial estimate + bad process covariance are common cases to test
+- Understand sensor spec sheet - is there any " typical performance characteristics" data, that can be used? For electronics related components, temperature plays an important role
+- Multivariate Gaussians captures relationship b/w state variables. Correlation & Covariance. +ve correlation means that if one variable is high, the other is likely to be high too. -ve correlation means that if one variable is high, the other is likely to be low. No correlation means that the variables are independent of each other. Height and weight are positively correlated. If Off-diagonal elements are zero, the variables are uncorrelated. -ve off-diagonal elements means that the variables are negatively correlated. +ve off-diagonal elements means that the variables are positively correlated.
+- Independent variables have zero correlation, but zero correlation does not imply independence. (Pg:161)
+- Wherever possible, consider state variables that are correlated, as it can help us to improve our estimates of hidden variables.
+
 
 ## Things to consider when using Kalman filters for a problem
 - Residual = actual measurement - predicted measurement. **Smaller residuals = better performance**
@@ -56,3 +64,6 @@
 - Check assumptions
     - Is actual sensor noise Gaussian? If it deviates a lot, we might need to use a different filter (eg: particle filter).
     - Measurement must not be correlated with time.
+    - Prediction must have Gaussian noise. Check if 3sigma coverst 99.7% of the noise
+- Bad process covariance, bad initial estimate, Bad initial estimate + bad process covariance are common cases to test
+- Wherever possible, consider state variables that are correlated, as it can help us to improve our estimates of hidden variables.
