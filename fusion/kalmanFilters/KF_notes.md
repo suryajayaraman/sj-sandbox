@@ -46,6 +46,20 @@
 - Multivariate Gaussians captures relationship b/w state variables. Correlation & Covariance. +ve correlation means that if one variable is high, the other is likely to be high too. -ve correlation means that if one variable is high, the other is likely to be low. No correlation means that the variables are independent of each other. Height and weight are positively correlated. If Off-diagonal elements are zero, the variables are uncorrelated. -ve off-diagonal elements means that the variables are negatively correlated. +ve off-diagonal elements means that the variables are positively correlated.
 - Independent variables have zero correlation, but zero correlation does not imply independence. (Pg:161)
 - Wherever possible, consider state variables that are correlated, as it can help us to improve our estimates of hidden variables.
+- When starting to design kalman filters, start with differential equations that describe the dynamics of the system. First, try considering `discretized continous time kinematic model` (CV, CA, CT) and then move to more complex models. These equations can be integrated quite easily, and have a closed form solution, making the implementation of the filter easier.
+- Gaussians everywhere core concept of KF
+- **Designing KF means to decide (X, P, F, Q, Z, R, B, U)**
+- Design State variables. Try to include correlation. But its a design choice. State variables can be observed variables (directly measured) or hidden variables (indirectly inferred from measurements).
+- Filter initialization
+    - Initialize the filter with first measurement, can use `H` to convert measurement to state space
+    - Same way, R can be used to initialize `P`
+    - Be careful when initializing hidden variables; need to ensure they make sense, and estimates got from them are reasonable
+- In process model, if there's correlation, hidden variables are estimated better
+- Process noise: White noise (zero mean and variance Q=E[w * w.Transpose()].Here Discrete white noise considered). White noise has mean of zero, hence it doesn't affect mean, just the variance. Note that it depends on delta_t
+- KF does the update step in measurement space. So, we need to convert the predicted state into measurements, for calculating the residual. We can't go from measurement to state, because state contains hidden variables. So, most often, measurements are not invertible. Residual is calculated in the measurement space. y = z - Hx, where H is the measurement function.
+- Meas. noise difficult to find correlation b/w sensors, also not Gaussian always. generally, sensor measurements are not correlated. Hence, the measurement noise covariance matrix is diagonal.
+- Pg:210 `KG (0-1) range`, `KG~PHT`, scale/weight b/w to prediction & measurement. HT = converts from measurement Space to state space.
+- Pg:215. Effect of including velocity in state vector allows to model changing velocity, else it will not react to state change
 
 
 ## Things to consider when using Kalman filters for a problem
@@ -67,3 +81,6 @@
     - Prediction must have Gaussian noise. Check if 3sigma coverst 99.7% of the noise
 - Bad process covariance, bad initial estimate, Bad initial estimate + bad process covariance are common cases to test
 - Wherever possible, consider state variables that are correlated, as it can help us to improve our estimates of hidden variables.
+- Good test, is to provide incorrect initial estimates, and check if the filter converges (P_est reduces to small value)
+- Lower P_est, is good sign, but doesn't confirm if the filter is actually performing well
+- When Tracking dynamic objects, having >> P is justified as more uncertainty in movement
