@@ -60,6 +60,16 @@
 - Meas. noise difficult to find correlation b/w sensors, also not Gaussian always. generally, sensor measurements are not correlated. Hence, the measurement noise covariance matrix is diagonal.
 - Pg:210 `KG (0-1) range`, `KG~PHT`, scale/weight b/w to prediction & measurement. HT = converts from measurement Space to state space.
 - Pg:215. Effect of including velocity in state vector allows to model changing velocity, else it will not react to state change
+- `x_dot = Ax(t) + Bu(t) + w` is continous ODE form of physical system where w(t) = white noise. A = system dynamics matrix (continous space). Generally, A involves higher order differential equations. But, convert it to set of linear first order equations -> state space form
+- `x_k = F * x_k-1 + B_k * u_k` is discrete form where **F=Transition matrix**, consisting of discete linear equations (not differential equations), transitions from x_k-1 to x_k over time step (delta_t). Finding this `F` matrix is very difficult. Closed form solution exists for simple ODEs
+- Pg:239. **1.Matrix exponential:** `x_dot = Ax`, can compute for equations having analysitcal solution. Solution is F = `e^At` computed using Taylour series. In Taylor series expansion, mostly `A^2` is 0, making any term later than 2nd term irrelevant. Hence, often, for Kalman filters, only 1st two terms matter. But even taylor series solution (and every other solution) involves numerical problems
+- Designing process noise covariance (Q_discrete) is difficult. In `x_dot=Ax + Bu + w`, system inputs and outputs are continous w.r.t time. But Kalman filter is discrete (continous form exists, but not discussed here). So, we must find discretized version of the noise term (Q). It depends on what assumptions, we make of the behaviour of the noise
+- Pg:243 Continous white noise model `x_dot=Ax + Bu + w` is  continous over time. For CA model, we assumd `a=0`. But we're modelling it using by assuming (a) changes by continous zero mean white noise. Hence delta_velocity averaged over time = 0
+- Pg:244 Q = **[0 0 0; 0 0 0; 0 0 1] * phi** where phi = spectral density of white noise. Its difficult to compute analytically
+- Pg:245 Piecewise White noise: (acceleration is constant for discrete timestep; and uncorrelated over time. But it varies across time -> it has a discontinous jump between each timestamp). This approach allows us to specify Q in terms of sigma_v, the error, that we expect in motion, which is easier, intuitive, compared to finding the spectral density.
+- In some cases, we might be able to get away with approximations for `Q`. Just a non-zero value for the variable, that is assumed to be undergoing noise - acceleration. Even, if we find exact solution - assuming either continous white noise, or piecewise white noise, result is similar
+- Pg:251 Numerical methods for integrating ODE. Matrix exp and Laplace transform okay for simple linear ODEs. `Complex math models => numerical methods`
+- `x_dot=A*x => X_k = F * X_k-1. Numerical solution using Euler & RK4 methods`. Input is derivative of the system, expressed in `x_dot(t) = Ax(t)`, Output is x(t) -> what is the system state at time t, given we have A, and initial state x_0. RK4 method is standard for these problems. Euler is simpler, but slower, and requires smaller step size to be accurate.
 
 
 ## Things to consider when using Kalman filters for a problem
@@ -84,3 +94,4 @@
 - Good test, is to provide incorrect initial estimates, and check if the filter converges (P_est reduces to small value)
 - Lower P_est, is good sign, but doesn't confirm if the filter is actually performing well
 - When Tracking dynamic objects, having >> P is justified as more uncertainty in movement
+- Find system dynamics equation in continous space; then convert to discrete space (using Matrix exponential or similar methods). Fix on noise behaviour (continous, piecewise white noise), then discretize it and then calculate discretized process noise covariance (Q_discrete)
