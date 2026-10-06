@@ -5,11 +5,15 @@
 ## Points to remember
 - Pg:262 2D Pose senser simulation (CV) model. returns x_s, z_s
 - 2D Tracking problem. Pg: 262 **Step1:** Choosing state variables. List down variables of interest, using some form of mathematical expressions **(x)**
+
 ![step1_state_vector](images/step1_state_vector.PNG)
+
 - Pg:263 **Step2:** State transition fn. Define the continous ODEs that describe the phyiscal system. (eg: CV model, CA model). Discretize the continous eqns to get state transition matrix , which helps propagate state in prediction step. **(A)**. This step can be used to introduce any known correlation
+
 ![step2_state_transition_matrix](images/step2_state_transition_matrix.PNG)
 
-- Pg:264. **Step3:** Process noise Dicerete wiener/white noise. Choose delta_a variable for general CA, CV and related systems (uncertainty that will be added to state vector with each time period) **(Q)**.
+- Pg:264. **Step3:** Process noise Discrete wiener/white noise. Choose delta_a variable for general CA, CV and related systems (uncertainty that will be added to state vector with each time period) **(Q)**.
+
 ![step3_process_noise](images/step3_process_noise.png)
 
 - **Step4:** control I/P (B). If aware of control input to system, try to model that using `delta_x = B * u` form. **(B)**
@@ -28,18 +32,21 @@
 
 ![step7_initial%20conditions](images/step7_initial%20conditions.PNG)
 
-- Pg:268. Filter order = degree of highest form, (CA=2, CV=1). order of system = design choice. If something can travel mostly with const. vel use order=1, else it'd be bad choice
+- Pg:268. Filter order = degree of highest form, (CA=2, CV=1). order of system = design choice. If something can travel mostly with const. vel use order=1, else it'd be bad choice. Even constant acceleration model (order = 2) is a bad choice in that case.
 - Pg:270-272, 1st, 2nd and 0th order (ID) Tracking filter code. Pg:273 fn to Plot residual: from batch o/p data **Here Residual = diff b/w x_gt, x_est**
 - **Pg:274, residual within 1sigma range, zero mean, not diverging check for each state**
+- Ways to evaluate a filter
+    - If ground truth is available, residuals between ground truth and estimated values.
+    - Plot 1sigma or 3 sigma of `P_posterior`. If its performing correclty, 99% of residuals will be within 3sigma of `P_posterior`. For real sensors, we might need to expand the criteria of 5sigma (99.99999xxx% of residuals must fall within particular range)
+- Ideally, if there was zero measurement noise and KF was perfect, residuals must be horizontal line at 0. The residuals need to be looked at for all state variables (position, velocity)
 
 ![filter_evaluation](images/filter_evaluation.png)
 
-
-- Pg:275-276. Failure of 0th order filter to model/estimate velocity changes. `Residual seems to diverge even though P_est is decreasing (converging)`
+- Pg:275-276. Failure of 0th order filter to model/estimate velocity changes. `Residual seems to diverge even though P_est is decreasing / converged (converging)`. P_est reflects how confident, the filter is, in its own estimates. But if residuals exceed that, it indicates difference between actual system and reality
 
 ![zero_order_filter_cv_model](images/zero_order_filter_cv_model.PNG)
 
-- Pg:275-276 `2nd order filter, trying to model small delta_V as acceleration, closely tracks noise in measurements, reflected in velocity residual`
+- Pg:275-276. 2nd order filter, trying to model small delta_V as acceleration, closely tracks noise in measurements, reflected in velocity residual
 
 ![seconds_order_filter_cv_model_residual](images/seconds_order_filter_cv_model_residual.PNG)
 
@@ -64,7 +71,6 @@
 - So, if likelihood is low, if valid measurements, then filter is not optimal. Log likelihood is preferred as it more numerically stable. Pg:297-298) likelihood intuition.
 
 ![likelihood_inference](images/likelihood_inference.png)
-
 
 - Pg:299 Control I/P model change (eg steering and acc i/p)
 - Pg:300-304, Wheelspeed and position sensor 2D Tracking example.
