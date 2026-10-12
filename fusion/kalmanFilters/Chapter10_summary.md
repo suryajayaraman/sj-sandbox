@@ -3,7 +3,8 @@
 - [Chapter 10 Notebook](https://github.com/rlabbe/Kalman-and-Bayesian-Filters-in-Python/blob/master/10-Unscented-Kalman-Filter.ipynb)
 
 ## Points to remember
-- Pg:343: Monte carlo approach for any NL problems But. num points >>>
+- Non linearity, can come from either measurements or the process model.
+- Pg:343: Monte carlo approach for any NL problems (particle filters, ensemble filters), but num points, without any sound logic, will be >>>. Not practically possible
 - Smart way of choosing sigma points = sampling from distribution
 ![unscented_transform_non_linear_example](images/unscented_transform_non_linear_example.PNG)
 
