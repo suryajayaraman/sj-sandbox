@@ -14,7 +14,7 @@
 - Pg:71 convolution in stochastic vs deterministic
 - Pg:75, Discrete bayes filter pseudocode.
 
-![discrete_bayes_filter](images/discrete_bayes_filter.png)
+![discrete_bayes_filter](images/ch2_discrete_bayes_filter.png)
 
 - Pg:79, bad sensor data recovery.
 - Pg:79 Drawbacks of discrete Bayes filter scaling. x O(n^n) where n = state dimension, curese of dimensionality -> not desirable in all cases, 4th = requires change in input state

@@ -22,24 +22,24 @@
 - Pg:210 `KG (0-1) range`, `KG~PHT`, scale/weight b/w to prediction & measurement. HT = converts from measurement Space to state space.
 - Pg:215. Effect of including velocity in state vector allows to model changing velocity, else it will not react to state change
 
-![effect_of_including_tracking_variables](images/effect_of_including_tracking_variables.PNG)
+![effect_of_including_tracking_variables](images/ch6_effect_of_including_tracking_variables.PNG)
 
 - If we're controlling a robot, we know the control input (u). But if we're tracking a moving object, we don't know the control input. So, we can include velocity in the state vector to model changing velocity. This allows the filter to react to changes in the object's motion.
 - Pg:216 In localisation we know control I/P. **But for tracking include, V. So that I can model / try to predict changes in using correlation in model**. The correlation factor, is what allows us to calcualte velocity, even when we measure just the position. The correlation is propagated through process model (F), to Kalman gain, which is used to update state estimates (residual). This correction increases, as correlation increases.
 - Pg:217 `KG going down is good sign of convergence, so is decreasing residual and variance (P_est)`. Good test would be provide offset in initial estimate, check if P converges
 
-![P_est_verification](images/P_est_verification.png)
+![P_est_verification](images/ch6_P_est_verification.png)
 
 - Pg:218-226 - Effect of tuning different variables
 - Q↑ -> less trust in prediction, closely follow measurements
 - Less Q -> more trust in prediction, can lead to ignoring measurements.
 - **>> R causes KF to ignore measurements. Can give smooth results, but not stable. Bad initial estimate can cause it to diverge** Check for P_est Value.
 
-![effect_of_varying_q](images/effect_of_varying_q.PNG)
+![effect_of_varying_q](images/ch6_effect_of_varying_q.PNG)
 
 - Decent R values helps KF recover even in bad initial estimate
 
-![effect_of_varying_r](images/effect_of_varying_r.PNG)
+![effect_of_varying_r](images/ch6_effect_of_varying_r.PNG)
 
 - Pg:221-222, effect of P (Higher P means more trust in measurements, Lesser P means ignores measurements,  P_est might not converge). **When Tracking dynamic objects, having >> P is justified as more uncertainty in movement**
 - Pg:225-226, difference b/w high R and low R. if we lie to KF that R», then it will trust prediction more (can introduce More correlation). The correlation behaviour seen in filter output, needn't necessarily reflect the correlation in reality. The filter output depends on values of Q,R. Important to have same axis scale when viewing covariance values

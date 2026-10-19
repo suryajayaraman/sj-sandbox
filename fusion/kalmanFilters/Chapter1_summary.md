@@ -9,13 +9,13 @@
 - If you have one sensor giving accurate measruements, and one giving less accurate measurements, then combining both sensors even if inaccurate, is important. **But both measrurements should be independent of each other**
 - When there are two data sources of the same quantity with each having eq probability of giving values above and below ground truth, then actual value lies b/w 2 errorbars of datasources **ERROR BAR CONCEPT**
 
-![error_bars_concept](images/error_bars_concept.PNG)
+![error_bars_concept](images/ch1_error_bars_concept.PNG)
 
 - Prediction step (domain knowledge) is important. (Pg: 28 trend plots). **Need to treat prediction as a source of data (measurement) as well, and combine it with actual measurements to get better estimate of actual state.**
 - **Residual concept in gh filter** (Pg:30)
 - Residual = actual measurement - predicted measurement. Most cases, the final estimate will be a weighted sum of the residual and the prediction.
 
-![gh_filter_prediction_correction_intuition](images/gh_filter_prediction_correction_intuition.PNG)
+![gh_filter_prediction_correction_intuition](images/ch1_gh_filter_prediction_correction_intuition.PNG)
 
 - Pg:33 (Top plot), Pg 31-32 basic filter (static process model_o/p = weighted sum of residual and predictions)
 - Pg:34 (Process model is updated based weighted sum nof Predictions) on residual). Never trust too much on predictions
@@ -25,17 +25,17 @@
 - Pg:48 Bad Inital estimate causes Ringing (large noise in data)
 
 **Bad Inital estimate**
-![bad_initial_conditions_check](images/bad_initial_conditions_check.PNG)
+![bad_initial_conditions_check](images/ch1_bad_initial_conditions_check.PNG)
 
 - Pg:43 Difference b/w actual process model and filter model
 
 **Difference b/w actual process model and filter model**
-![mismatching_process_model_test](images/mismatching_process_model_test.PNG)
+![mismatching_process_model_test](images/ch1_mismatching_process_model_test.PNG)
 
 - Pg:44 Varying g, >g more trust in measurement, we react more to model state change. If g is too small, we might reject even state change as noise.
 
 **Effect of using small g**
-![Effect_of_small_g](images/Effect_of_small_g.PNG)
+![Effect_of_small_g](images/ch1_Effect_of_small_g.PNG)
 
 - Pg:46 Varying h, >h we can respond to transient change
 - Pg:48 (h=0, g=0) means we ignore measurements

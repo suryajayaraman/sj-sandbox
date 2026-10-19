@@ -21,7 +21,7 @@
 
 - Pg:124 Update step - Gaussian multiplication (variance is reduced, weighted average of means)
 
-![gaussian_multiplication_formula](images/gaussian_multiplication_formula.png)
+![gaussian_multiplication_formula](images/ch4_gaussian_multiplication_formula.png)
 
 - Pg:132 - Process noise intuition, sigma, -> 3sigma=99.7%
 - Pg:135 KG intuition. posterior is weighted sum of prior & likelihood
@@ -37,7 +37,7 @@
 - Pg:139 - Why Gaussian > uniform for sensor modelling - sensors are more likely to report erros to actual value, than equal probability across all range of values
 - Pg:140 - Discrete vs uniform vs Gaussian distribution. Discrete dieribution provides powerful way to model any arbitary distribelton But using that for practical purpose difficult. intractible
 
-![discrete_uniform_gaussian_distributions](images/discrete_uniform_gaussian_distributions.PNG)
+![discrete_uniform_gaussian_distributions](images/ch4_discrete_uniform_gaussian_distributions.PNG)
 
 - Difficult to analyse discrete distribution
 - Pg:141 - Sensor meas. noises application dependent

@@ -11,7 +11,7 @@
 
 - Pg:160-161 -> +ve, -ve and no correlation (unfilled ellipse in 2D)
 
-![types_of_correlation](images/types_of_correlation.PNG)
+![types_of_correlation](images/ch5_types_of_correlation.PNG)
 
 - Pg:162 To find Prob. of being at a point, we integrate surface to calculate volume (2D joint Probabilly)
 - Pg:163 joint vs marginal Probability (Pg:164 sample plot, cut section view). Joint probability is the probability of two events happening at the same time. Marginal probability is the probability of a single event happening, regardless of the other event.
@@ -24,9 +24,9 @@
 
 - Pg:174 - Tracking aircraft using 2 radars uniform distribution (1 sensor update covariance reduces) But and orthogonal sensor: Better ↓ in Variance (consider sensor geometry too) as same direction Sensor would have given lesser reduction in covariance
 
-![multivariate_gaussian_mutiplication_correlation_implication](images/multivariate_gaussian_mutiplication_correlation_implication.png)
+![multivariate_gaussian_mutiplication_correlation_implication](images/ch5_multivariate_gaussian_mutiplication_correlation_implication.png)
 
 - Pg:178 - Correlation can increase our knowledge of hidden variables. We introduce correlation using F,Q matrices. KF understands this and tries to infer correlation form F, Q
 - Pg:181-182. Assuming CV model = prior (prediction) => correlated. But 2D Position measurement update is uncorrelated. Together they help in reducing Cor. (Whys and hows in Pg:182). Thus, having hidden variables in state vector, and having correlated variables, can help us to improve our estimates of hidden variables.
 
-![correlation_improves_hidden_variables_estimates](images/correlation_improves_hidden_variables_estimates.PNG)
+![correlation_improves_hidden_variables_estimates](images/ch5_correlation_improves_hidden_variables_estimates.PNG)

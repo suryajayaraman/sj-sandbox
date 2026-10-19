@@ -33,15 +33,15 @@
 - Pg:253 Derivative @ Pt. Taylor series 1st term alone used. Simple but delta_t needs to be small to work well or non linear ODEs.
 - Eg : For simple `y=y^2` equation itself, a step size of 1 causes estimates to diverge, while we need >10000 iterations to compute good estimates (< 0.005)
 
-![Euler_method_gradient_calc](images/Euler_method_gradient_calc.png)
+![Euler_method_gradient_calc](images/ch7_Euler_method_gradient_calc.png)
 
 - Pg:254-255, RK4 standard way to integrate ODE's with example" ODES
 - Runge Kutta method formula
 
-![rk4_formula](images/rk4_formula.PNG)
+![rk4_formula](images/ch7_rk4_formula.PNG)
 
 - Runge Kutta method example for Non linear problems
 
-![rk4_example](images/rk4_example.png)
+![rk4_example](images/ch7_rk4_example.png)
 
 - Pg:256: Markov decision process assumption, Current state is dependent on Prev.state and transition prob. Essentially, we don't care about past states, with assumption that current state contains all variables of interest.

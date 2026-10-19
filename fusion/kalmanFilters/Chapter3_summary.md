@@ -8,14 +8,14 @@
 - Pg:89-90 **Measure of central tendency (mean, median, mode)**
 - Pg:90 E[X] = Expected vales of Random variable average Value on infinite no. of trials. If all values have equal, Prob then E[x] = mu[x]. For continous probability distribution
 
-![expected_value_cont_formula](images/expected_value_cont_formula.PNG)
+![expected_value_cont_formula](images/ch3_expected_value_cont_formula.PNG)
 
 - Pg:92- Var[x] = how much values are for from mean. Variation among values themselves. Variance is affected by outliers. Variance's unit is "squared unit". Might not be easy to infer, hence, std.deviation -> same unit as the state member variable. 1 sigma => 68% of all values lie within one standard deviation of the mean.
 - In general, when designing products (for example, desks; average height of men, will be higher than women), used by different sexes / groups, there might be two peaks (means). This needs to be taken into account and handled (range of heigh adjustment etc)
 
 - Pg:93 68% of values lies within (mu ± 1sigma), 95% of values lies within (mu ± 2sigma), 99.7% of values lies within (mu ± 3sigma). This is called the 68-95-99.7 rule.
 
-![68_95_99.7_rule](images/68_95_99.7_rule.PNG)
+![68_95_99.7_rule](images/ch3_68_95_99.7_rule.PNG)
 
 - Pg:96 = why square of diff. when computing Var[x](Gauss said it, little arbitary) - to give more importance to outliers. For a distribution having more outliers, needed a way to differentiate that it varies a lot from the mean. Hence, squared difference for variance
 
