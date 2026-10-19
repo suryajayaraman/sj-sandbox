@@ -1,0 +1,108 @@
+
+## Summary of Kalman filter concepts
+- System = object that we want to estimate. State = current configurabiotn of the system, that is of interest
+- Measurement = measrued value of the system. State estimate =filter's estimate of the state
+- Residual = actual measurement - predicted measurement. **Smaller residuals = better performance**
+- Prior (probability distribution) = state estimated before incorporating any measurement
+- Frequentists approach: treat the state as a fixed but unknown quantity.
+    - As you get more data, you refine your estimate of the state (no relevance to priori information). The estimate is a single value, not a distribution.
+    - Evaluating the evidence under a hypothesis
+- Bayesian approach
+    - Treat the value as a random variable with a probability distribution. (belief about the state). As you get more data, you refine your estimate of the state (incorporating prior information). The estimate is a probability distribution, not a single value.
+    - Update belief based as you get more data
+- If its a probability distribution, sum of all probabilities = 1.0. Likelihood does not sum to 1.0, as its not a probability distribution.
+- posterior = normalized (prior * likelihood)
+- Bayesian approach: treat the state as a random variable with a probability distribution. The prior is the probability distribution of the state before incorporating any measurement. The posterior is the probability distribution of the state after incorporating a measurement.
+- Discrete Bayes filter pseudocode
+    - Initialization
+        - Initialize our belief in the state
+    - Predict
+        - Based on the system behavior, predict state for the next time step
+        - Adjust belief to account for the uncertainty in prediction
+    - Update
+        - Get a measurement and associated belief about its accuracy
+        - Compute how likely it is the measurement matches each state
+        - Update state belief with this likelihood
+- Random variable (RV), if O/P of event has multiple outcomes each with own prob, it constitute an RV. Discrete/ cont. based on sample.
+- Measure of central tendency (mean, median, mode)
+- E[X] = Expected vales of Random variable average Value on infinite no. of trials. If all values have equal, Prob then E[x] = mu[x]
+- Var[x] = how much values are for from mean. Variation among values themselves. Variance is affected by outliers.
+- Central limit theorem states that, if we take a large number of samples from any distribution, the mean of those samples will be approximately Gaussian distributed. This is why Gaussians are so common in nature and in engineering. Even if the original (population) distribution is not Gaussian, the mean of a large number of samples (sample distribution) from that distribution will be Gaussian.
+- Gaussians are used - computationally efficient, easy to work with, nice math properties. f(x) proportional to e^-x2. Sum of Gaussians = Gaussian, Product of Gaussians = Gaussian (assuming its normalized).
+- Gaussians allow us to implement the algorithms used in the discrete Bayes filter to work in continuous domains. Many tracking and filtering problems can be solved with a continuous, unimodal filter. The Kalman filter is one such filter.
+- Gaussian limitations
+    - Assumes data is normally distributed
+    - Real world sensor errors are not exactly Gaussian, but they are often close enough that the Gaussian assumption is a good approximation.
+    - Kalman filter math is for idealized world, where sensor error is assumed to be Gaussian.
+    - If the assumption is violated, the filter may not perform well. Consumers need to be aware of this limitation. Generally, 3sigma limit is used to differentiate noise from actual signal.  For example, in NASA mission,they had to use 5sigma limit, as the sensor noise was not Gaussian, and they were getting false positives. Hence, they had to use a more conservative limit to avoid false positives.
+- Statistical ways to measure distribution (deviation from exponential distribution)
+    - Non symmetric nature, around the mean, is measured by skew
+    - kurtosis measures how different the tails are, compared to a Gaussian distribution
+    - As sample size increases, skew and kurtosis approach 0.
+- KF is just bayes filter with Gaussians. (Gaussians because, they approximate most sensor measurement errors)
+    - KG is just weighted average between prediction and measurement
+    - Bad process covariance, bad initial estimate, Bad initial estimate + bad process covariance are common cases to test
+- Understand sensor spec sheet - is there any " typical performance characteristics" data, that can be used? For electronics related components, temperature plays an important role
+- Multivariate Gaussians captures relationship b/w state variables. Correlation & Covariance. +ve correlation means that if one variable is high, the other is likely to be high too. -ve correlation means that if one variable is high, the other is likely to be low. No correlation means that the variables are independent of each other. Height and weight are positively correlated. If Off-diagonal elements are zero, the variables are uncorrelated. -ve off-diagonal elements means that the variables are negatively correlated. +ve off-diagonal elements means that the variables are positively correlated.
+- Independent variables have zero correlation, but zero correlation does not imply independence. (Pg:161)
+- Wherever possible, consider state variables that are correlated, as it can help us to improve our estimates of hidden variables.
+- When starting to design kalman filters, start with differential equations that describe the dynamics of the system. First, try considering `discretized continous time kinematic model` (CV, CA, CT) and then move to more complex models. These equations can be integrated quite easily, and have a closed form solution, making the implementation of the filter easier.
+- Gaussians everywhere core concept of KF
+- **Designing KF means to decide (X, P, F, Q, Z, R, B, U)**
+- Design State variables. Try to include correlation. But its a design choice. State variables can be observed variables (directly measured) or hidden variables (indirectly inferred from measurements).
+- Filter initialization
+    - Initialize the filter with first measurement, can use `H` to convert measurement to state space
+    - Same way, R can be used to initialize `P`
+    - Be careful when initializing hidden variables; need to ensure they make sense, and estimates got from them are reasonable
+- In process model, if there's correlation, hidden variables are estimated better
+- Process noise: White noise (zero mean and variance Q=E[w * w.Transpose()].Here Discrete white noise considered). White noise has mean of zero, hence it doesn't affect mean, just the variance. Note that it depends on delta_t
+- KF does the update step in measurement space. So, we need to convert the predicted state into measurements, for calculating the residual. We can't go from measurement to state, because state contains hidden variables. So, most often, measurements are not invertible. Residual is calculated in the measurement space. y = z - Hx, where H is the measurement function.
+- Meas. noise difficult to find correlation b/w sensors, also not Gaussian always. generally, sensor measurements are not correlated. Hence, the measurement noise covariance matrix is diagonal.
+- Pg:210 `KG (0-1) range`, `KG~PHT`, scale/weight b/w to prediction & measurement. HT = converts from measurement Space to state space.
+- Pg:215. Effect of including velocity in state vector allows to model changing velocity, else it will not react to state change
+- `x_dot = Ax(t) + Bu(t) + w` is continous ODE form of physical system where w(t) = white noise. A = system dynamics matrix (continous space). Generally, A involves higher order differential equations. But, convert it to set of linear first order equations -> state space form
+- `x_k = F * x_k-1 + B_k * u_k` is discrete form where **F=Transition matrix**, consisting of discete linear equations (not differential equations), transitions from x_k-1 to x_k over time step (delta_t). Finding this `F` matrix is very difficult. Closed form solution exists for simple ODEs
+- Pg:239. **1.Matrix exponential:** `x_dot = Ax`, can compute for equations having analysitcal solution. Solution is F = `e^At` computed using Taylour series. In Taylor series expansion, mostly `A^2` is 0, making any term later than 2nd term irrelevant. Hence, often, for Kalman filters, only 1st two terms matter. But even taylor series solution (and every other solution) involves numerical problems
+- Designing process noise covariance (Q_discrete) is difficult. In `x_dot=Ax + Bu + w`, system inputs and outputs are continous w.r.t time. But Kalman filter is discrete (continous form exists, but not discussed here). So, we must find discretized version of the noise term (Q). It depends on what assumptions, we make of the behaviour of the noise
+- Pg:243 Continous white noise model `x_dot=Ax + Bu + w` is  continous over time. For CA model, we assumd `a=0`. But we're modelling it using by assuming (a) changes by continous zero mean white noise. Hence delta_velocity averaged over time = 0
+- Pg:244 Q = **[0 0 0; 0 0 0; 0 0 1] * phi** where phi = spectral density of white noise. Its difficult to compute analytically
+- Pg:245 Piecewise White noise: (acceleration is constant for discrete timestep; and uncorrelated over time. But it varies across time -> it has a discontinous jump between each timestamp). This approach allows us to specify Q in terms of sigma_v, the error, that we expect in motion, which is easier, intuitive, compared to finding the spectral density.
+- In some cases, we might be able to get away with approximations for `Q`. Just a non-zero value for the variable, that is assumed to be undergoing noise - acceleration. Even, if we find exact solution - assuming either continous white noise, or piecewise white noise, result is similar
+- Pg:251 Numerical methods for integrating ODE. Matrix exp and Laplace transform okay for simple linear ODEs. `Complex math models => numerical methods`
+- `x_dot=A*x => X_k = F * X_k-1. Numerical solution using Euler & RK4 methods`. Input is derivative of the system, expressed in `x_dot(t) = Ax(t)`, Output is x(t) -> what is the system state at time t, given we have A, and initial state x_0. RK4 method is standard for these problems. Euler is simpler, but slower, and requires smaller step size to be accurate.
+- Order of the system is important. Should reasonably reflect the system in question. **Lower order filter can track higher order physical process, provided, the process noise is that much higher and sampling frequency is higher; the system is almost linear in ~10ms duration**.
+- Need ground truth to truly evaluate filter performance. NEES (normalized estimation error squared) score, and state residuals, are good ways for evaluation. When ground truth is not available, check the log likelihood of the measurements. If we know the measurements are valid, then we can expect log likelihood on (S/y^2), to be close to zero. Lower values (-ve) indicate non-optimal filter or assumptions not being valid (Gaussian noise, linearity etc). Log likelihood is preferred as it more numerically stable.
+- Commercial GPS already has KF, O/p is filter o/p. Its not advisable for us to use that in another KF as our own filter will track filtered o/p (not actual position). Plot shows lag, smooth o/p, which are very late to react to State changes.
+- If either the process model or the measurement function is non linear, then regular Kalman filter will not work and start diverging. Need to rely on EKF or UKF. EKF is more difficult to implement, and can diverge in highly non linear problems. UKF is easier to implement, but slower than EKF. Particle filters are more powerful, but require more compute resources.
+- UKF (Sigma point filter), generates sigma points, using the mean and covariance of the state estimate. Each of the sigma points is passed through the non-linear process and measurement functions, output is combined using weighted sum to get predicted states / expected measurements.
+- Multiple ways to generate sigma points - but Van der Merwe's method is commonly used. The method involves, taking Square root of the covariance matrix, using Cholesky decomposition. Hyper parameters include alpha, beta (=2 for Gaussian distribution), kappa (=3-n generally). Usually, mean will be one sigma point, and 2n sigma points are generated outside 1sigma. The spread of the sigma point, can be tuned using alpha (>> values, means more weightage for mean, and sigma points are spread out more)
+
+## Things to consider when using Kalman filters for a problem
+- Residual = actual measurement - predicted measurement. **Smaller residuals = better performance**
+- Predict the next measurement and rate of change, based on current estimate and how much we think it will change.
+- Cases to consider
+    - Incorrect initial estimate of state
+    - Large process noise
+    - Large measurement noise
+    - Bad measurement recovery
+- Need to predict state change (x_dot), even if we dont observe it (eg: in a car, we might predict its position based on velocity and acceleration). `h` in g-h filter indicates how much we trust the predicted estimate vs estimate from measurement. It indicates how much we respond to state change, which we are not modelling. **g-h values indicate a trade-off between how quickly we respond to measurements and how accurate we are.**
+- Discrete Bayes filter - discrete, multimodal, but has drawbacks
+    - Filter compute scales as O(n^n) where n = state dimension, curse of dimensionality. (example: for 100m x 100m area, with 1m resolution, we have 10,000 states. If we have 10 dimensions, we have 10^40 states. This is not feasible to compute.)
+    - Multi-modal might not be desirable in all cases. (example: if we're trying to estimate the position of a robot, we might not want a solution like "robot has 40% chance of being at x location; and 60% chance of being at y location.")
+- If we have control commands for prediction, better to incorporate them into the prediction step.
+- Check assumptions
+    - Is actual sensor noise Gaussian? If it deviates a lot, we might need to use a different filter (eg: particle filter).
+    - Measurement must not be correlated with time.
+    - Prediction must have Gaussian noise. Check if 3sigma coverst 99.7% of the noise
+- Bad process covariance, bad initial estimate, Bad initial estimate + bad process covariance are common cases to test
+- Wherever possible, consider state variables that are correlated, as it can help us to improve our estimates of hidden variables.
+- Good test, is to provide incorrect initial estimates, and check if the filter converges (P_est reduces to small value)
+- Lower P_est, is good sign, but doesn't confirm if the filter is actually performing well
+- When Tracking dynamic objects, having >> P is justified as more uncertainty in movement
+- Find system dynamics equation in continous space; then convert to discrete space (using Matrix exponential or similar methods). Fix on noise behaviour (continous, piecewise white noise), then discretize it and then calculate discretized process noise covariance (Q_discrete)
+- Order of the system critical decisiion at beginning
+- 2-step gating before incorporating measurements, for update step
+- Use Mahalanobis distance to check if measurement is an outlier, before incorporating it into the update step. (considers uncertainty as well, instead of just delta state)
+- Use log likelihood of (S/y^2) to check if filter is performing well, when ground truth is not available. If we know the measurements are valid, then we can expect log likelihood on (S/y^2), to be close to zero.
+- be careful if **angles are in state vector - non linearity in modular operation; wrapping between 0deg and 360deg. Need to check if taking average of state vectors makes sense**
+- Geometry of the sensor measurement also plays a crucial role, when combining data from different sensors. Prefer complementary sensors (eg: GNSS and IMU) whenever possible.
