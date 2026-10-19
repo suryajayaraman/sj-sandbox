@@ -70,7 +70,12 @@
 - In some cases, we might be able to get away with approximations for `Q`. Just a non-zero value for the variable, that is assumed to be undergoing noise - acceleration. Even, if we find exact solution - assuming either continous white noise, or piecewise white noise, result is similar
 - Pg:251 Numerical methods for integrating ODE. Matrix exp and Laplace transform okay for simple linear ODEs. `Complex math models => numerical methods`
 - `x_dot=A*x => X_k = F * X_k-1. Numerical solution using Euler & RK4 methods`. Input is derivative of the system, expressed in `x_dot(t) = Ax(t)`, Output is x(t) -> what is the system state at time t, given we have A, and initial state x_0. RK4 method is standard for these problems. Euler is simpler, but slower, and requires smaller step size to be accurate.
-
+- Order of the system is important. Should reasonably reflect the system in question. **Lower order filter can track higher order physical process, provided, the process noise is that much higher and sampling frequency is higher; the system is almost linear in ~10ms duration**.
+- Need ground truth to truly evaluate filter performance. NEES (normalized estimation error squared) score, and state residuals, are good ways for evaluation. When ground truth is not available, check the log likelihood of the measurements. If we know the measurements are valid, then we can expect log likelihood on (S/y^2), to be close to zero. Lower values (-ve) indicate non-optimal filter or assumptions not being valid (Gaussian noise, linearity etc). Log likelihood is preferred as it more numerically stable.
+- Commercial GPS already has KF, O/p is filter o/p. Its not advisable for us to use that in another KF as our own filter will track filtered o/p (not actual position). Plot shows lag, smooth o/p, which are very late to react to State changes.
+- If either the process model or the measurement function is non linear, then regular Kalman filter will not work and start diverging. Need to rely on EKF or UKF. EKF is more difficult to implement, and can diverge in highly non linear problems. UKF is easier to implement, but slower than EKF. Particle filters are more powerful, but require more compute resources.
+- UKF (Sigma point filter), generates sigma points, using the mean and covariance of the state estimate. Each of the sigma points is passed through the non-linear process and measurement functions, output is combined using weighted sum to get predicted states / expected measurements.
+- Multiple ways to generate sigma points - but Van der Merwe's method is commonly used. The method involves, taking Square root of the covariance matrix, using Cholesky decomposition. Hyper parameters include alpha, beta (=2 for Gaussian distribution), kappa (=3-n generally). Usually, mean will be one sigma point, and 2n sigma points are generated outside 1sigma. The spread of the sigma point, can be tuned using alpha (>> values, means more weightage for mean, and sigma points are spread out more)
 
 ## Things to consider when using Kalman filters for a problem
 - Residual = actual measurement - predicted measurement. **Smaller residuals = better performance**
@@ -95,3 +100,9 @@
 - Lower P_est, is good sign, but doesn't confirm if the filter is actually performing well
 - When Tracking dynamic objects, having >> P is justified as more uncertainty in movement
 - Find system dynamics equation in continous space; then convert to discrete space (using Matrix exponential or similar methods). Fix on noise behaviour (continous, piecewise white noise), then discretize it and then calculate discretized process noise covariance (Q_discrete)
+- Order of the system critical decisiion at beginning
+- 2-step gating before incorporating measurements, for update step
+- Use Mahalanobis distance to check if measurement is an outlier, before incorporating it into the update step. (considers uncertainty as well, instead of just delta state)
+- Use log likelihood of (S/y^2) to check if filter is performing well, when ground truth is not available. If we know the measurements are valid, then we can expect log likelihood on (S/y^2), to be close to zero.
+- be careful if **angles are in state vector - non linearity in modular operation; wrapping between 0deg and 360deg. Need to check if taking average of state vectors makes sense**
+- Geometry of the sensor measurement also plays a crucial role, when combining data from different sensors. Prefer complementary sensors (eg: GNSS and IMU) whenever possible.

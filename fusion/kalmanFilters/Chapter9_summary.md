@@ -18,6 +18,5 @@
 ![ekf_linearization_illustration](images/ekf_linearization_illustration.PNG)
 
 - Here, the non linear function is linearized, giving a horizontal line as gradient. The intersection of st.line and prior results in `red dot as position estimate` which is far off from the `actual position of blue dot`
-
 - UKF, recent soln, easier to work implement and analyse, more stable and accurate but slower than EKF.
-- `Monte-carlo methods like Particle filters more powerful, can model arbitary fn, but analysis and operating compute resources requirement is high
+- `Monte-carlo methods like Particle filters more powerful, can model arbitary fn, but analysis and operating compute resources requirement is high`

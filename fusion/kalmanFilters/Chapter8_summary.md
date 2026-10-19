@@ -56,13 +56,11 @@
 
 ![gating_concept](images/gating_concept.PNG)
 
-- Pg:293: Mahalanob's dist ~ Euclidean distance but in (std.dev) terms (S^-1) to incorporate uncertainty. If S=I, it results i euclidean distance formula.
-
-
+- Pg:293: Mahalanobis dist ~ Euclidean distance but in (std.dev) terms (S^-1) to incorporate uncertainty. If S=I, it results i euclidean distance formula.
 - Pg:294 `2 Gate approach. (Rectangular gate, Ellipsidal gate next)`
 - Pg:295 Practical difficulties of Designing KF
 - Pg:295 Evaluating filter performance. When we have GT (NEES) (x_err = x_gt - x_est), E = x_err.T * P * x_err -> In scalar terms, ~(x^2/P) `if P is very small, then of even for small error, E increases.
-- NEES is of  E[E]=n (n=state dim) ~ chi squared distribution, with n degrees of freedom. Take the mean value of NEER values, they should be less than n. **Essentially, when you have ground truth, use NEES score and state residuals to evaluate filter performance.**
+- NEES is of  E[E]=n (n=state dim) ~ chi squared distribution, with n degrees of freedom. Take the mean value of NEES values, they should be less than n. **Essentially, when you have ground truth, use NEES score and state residuals to evaluate filter performance.**
 - Pg:296 likelihood fn: Prob & likelihood are opposite teams with different i/p and o/p. Here, its measure of how likely is our filter performing optimally, given the assumptions of Gaussian noise and linear behaviour.
 
 `y=z - Hx. S = HPH.T + R.`
@@ -75,7 +73,7 @@
 
 - Pg:299 Control I/P model change (eg steering and acc i/p)
 - Pg:300-304, Wheelspeed and position sensor 2D Tracking example. **Covariance will incorportate all the information available, including geometry**
-- Pg:304-308. GPS uses iterative least squares to triangulate position. **Conditionss for Kalman filter inputs - Gaussian and time independent -  to saitsify Markov property**
+- Pg:304-308. GPS uses iterative least squares to triangulate position. **Conditions for Kalman filter inputs - Gaussian and time independent -  to saitsify Markov property**
 - `Commercial GPS already has KF, O/p is filter o/p. Its not advisable for us to use that in another KF as our own ilter will track filtered o/p (not actual position). Plot shows lag, smooth o/p, which are very late to react to State changes.`
 
 ![commercial_gps_recursive_kf_effect](images/commercial_gps_recursive_kf_effect.PNG)
