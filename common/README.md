@@ -1,5 +1,8 @@
 # Common concepts in ML and DL
 
+## Linear algebra
+- [Linear algebra concepts](linear_algebra/README.md)
+
 ## Loss functions
 - Cross Entropy ???
 - label smoothing CE ???
