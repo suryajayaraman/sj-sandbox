@@ -10,6 +10,7 @@ Sandbox Repository for personal projects, including notes to research, links to 
 | [Object Detection](object_detection/README.md) | Notes, experiments, references to 2D, 3D Object detection |
 | [Object Tracking](object_tracking/README.md) | Notes, experiments, references to 2D, 3D Object tracking |
 | [Programming](programming/README.md) | Programming concepts, notes |
+| [Segmentation](segmentation/README.md) | Segmentation concepts - instance, semantic etc |
 | [Safety Standards](safety_standards/README.md) | Safety standards and regulations for autonomous driving |
 | [Sensing](sensing/README.md) | Sensing techniques, Sensors understanding |
 | [Solutions](solutions/README.md) | Solutions and implementations, related to Perception in SDCs |
