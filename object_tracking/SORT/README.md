@@ -3,12 +3,12 @@
 ## Overview
 - C++ implementation of [SORT algorithm](https://arxiv.org/abs/1602.00763)
 - SORT (Simple and online realtime tracking), as the name indicates, is a simple Real-time tracking algorithm, where detections from the previous and the current frame are associated using the Hungarian algorithm and the state of each track is estimated using a Kalman filter. The algorithm is simple, fast and effective for tracking multiple objects in real-time.
-- Often used as a baseline for tracking multiple objects in real-time, SORT is a simple and effective algorithm that can be used in various applications such as surveillance, autonomous driving, and robotics.
+- Often used as a baseline for tracking multiple objects in real-time, SORT can be used in various applications such as surveillance, autonomous driving, and robotics.
 
 ![SORT Algorithm output](images/SORT_output.gif)
 
 - The repo uses [Eigen library](https://eigen.tuxfamily.org/index.php?title=Main_Page) for matrix operations and [hungarian algorithm](../../fusion/hungarianAlgorithm/) implementation
-- [sort.py](scripts/sort.py) from [official repo](https://github.com/abewley/sort) is the reference python implementation for this repo. Check the original repo on how to run the python script.
+- [Official python implementation](https://github.com/abewley/sort/blob/master/sort.py).
 
 ## Requirements
 The code was developed on Ubuntu 20.04 LTS OS with
