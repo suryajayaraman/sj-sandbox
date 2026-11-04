@@ -75,3 +75,61 @@
 
 ## Support vector machines
 - Alternative to logistic regression (trying to minimize the cost function)
+- Optimization objective for SVM is min(theta) -> y * cost(z) + (1-y) * cost(z) + 0.5*sum(theta^2), where z=prediction=theta*x
+- cost(z) profile varies, when y=1 and y=0. When y=1, we want z (~output) to be much greater than 1, not just >=0. If y=0, we want z to be much lesser than -1.
+- cost function for SVM becomes min(theta) cx + 0.5*sum(theta^2), subject to constraints, that theta*x>=1, when y=1 and theta*x<=-1, when y=0. Basically, SVM tries to increas the distance / decision boundary from each class. Hence, its called large margin classifier
+- **TBD - understand math behind SVM**
+    - cx part is negligible under certain considerations. Then, it becomes about minimizing 0.5*(theta^2)
+    - theta^2 is just square of norm of theta -> magnitude of theta
+    - Considering theta*x is just projection of X onto theta (assuming theta_0=0 for time being)
+    - theta*x = projection needs to be >=1 (much larger than one) to satisfy the constraints. Hence, magnitude of theta has to be large, but its a minimisation problem
+- c = (1/ lambda)
+    - large C -> lambda=small -> lower bias, high variance (overfitting)
+    - small C -> lambda=large -> higher bias, lower variance (underfitting)
+- sigma^2 = large; very smooth transition; higher bias; lower variance
+- sigma^2 = small; very sharp slope; lower bias; higher variance
+- libSVM, liblinear implementations solve for theta;
+- works well for problems, when m = small, n = large; if features are enough (prone to overfitting), best to use linear kernels
+- Kernels available
+    - Linear
+    - Gaussian, need to choose sigma^2 (ensure feature scaling is done, before gaussian kernel)
+    - polynomial kernels
+    - others - need to ensure Mercer's theorem to ensure SVM packages don't diverge.
+- **Not all similarity functions make valid kernels**
+
+
+### Kernels
+- Generic prediction formula => theta0 + theta1*f1 + theta2*f2 + theta3*f3 >= 0, where f1=x1, f2=x^2, f3=x^3
+- For given input features x1,x2, compute new features, close to some landmarks (similarity functions). fx = similarlity(x,lx) = exp ( -|x-lx|^2 / 2sigma^2)
+- Similarity functions, when x=lx, then fx=exp(-0) -> 2. When x is far from lx, fx=exp(-large number) -> 0
+- Sigma in denominator is a hyperparameter to adjust the covariance thresholds
+- Above similarity function is ~Gaussian distribution
+- Possible options for landmarks - each of training example themselves. Basically, for each entry in training set X,Y, compute new features (f1, f2, ..) by comparing with other examples in training set, and append them as new features. Then, predict y=1, when theta*f >=0
+- Training workflow - minimize theta, sum (y * cost(theta*f) + (1-y) * cost(theta *f) + |theta^2|)
+- in above setup, the number of features is equal to number of training examples. When m=10k, theta = 10k order. Not tractable for larger datasets.
+- SVMs are implemented with more tricks, than just kernels + logistic regression.
+- Kernels are good choice for finding features for other algorithms, but they themselves with SVM don't work well.
+
+## Multi class classification
+- One vs all method. Train k SVMs, one to distinguish y=i from rest of classes. Pick class with highest probability of being true.
+
+## Unsupervised learning
+- unlabelled exmaples - find some structure in dataset
+- Applications
+    - Market segmentation (serve customers better, FB, Google)
+    - Social network avanalysis
+    - Organize computing clusters - understand datacenters better; organize resources bettern
+    - Astronomical data analysis
+
+### K-means algorithm
+
+#### Input
+- K (number of clusters)
+- unlabelled dataset R^n dimension
+
+#### Procedure
+- Randomly initialize K cluster centroids
+- Repeat
+    - For each exmaple, find closest clusters for each training example. Distance can be L2 norm or similar
+    - Update cluster centroid
+    - If a cluster centroid has not data point with it, elminate it
