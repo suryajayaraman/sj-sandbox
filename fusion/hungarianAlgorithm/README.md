@@ -1,8 +1,57 @@
 # Hungarian Algorithm
 
 ## Overview
+- [Hungarian algorithm](https://onlinelibrary.wiley.com/doi/abs/10.1002/nav.3800020109) is an optimization method to solve "linear assignment problem" in polynomial time (O(n^3))
+- It was presented in 1955 by HW Kuhn, and time complexity was verified by James Munkres in 1957. Hence, referred to as Kuhn–Munkres algorithm / Munkres algorithm / Hungarian method (as it's based on work of two Hungarian mathematicians)
+- Given a set of jobs / tasks with specific cost associated with each of them, and finite set of workers / resources to do them, Hungarian algorithm is guaranteed to find `global minimum (best solution) that minimizes the cost`.
+- Time complexity - O(N^3). Memory -  O(N^2).
+
+## Applications to Perception domain
+- Often used for solving **Data association problem in Object Tracking Applications**. In the following image, we need to associate the detections from Lidar to detections in camera. Essentially, hungarian
+algorithm can be used to associate data from different sensors, so as to fuse them to get better estimations
+
+![Lidar and Camera Data Association](images/usecase.png)
+
+[Image reference](https://www.thinkautonomous.ai/blog/?p=hungarian-algorithm)
+
+- It's also one of the foundations for tracking algorithms like [SORT (Simple Online and Realtime tracking)](https://arxiv.org/pdf/1602.00763.pdf)
+- [scipy's linear_sum_assigment implementation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linear_sum_assignment.html) works for 2D rectangular assignment problems
+
+## Pros
+- Guaranteed optimal results
+- Deterministic results
+- Polynomial time complexity is better than brute force approach (O(N!))
+
+## Cons
+- O(n^3) scales poorly with larger inputs
+- Original implementation works only for square matrices. For non-square rows, need to add dummy rows / columns
+- Can work only with single objective function. Doesn't handle constraints.
+- Doesn't work well with sparse inputs; doesn't offer any speed inputs.
+
+## Algorithm implementation
+
+### Requirements
+The code was developed on Ubuntu 20.04 LTS OS with
+- g++ 9.4.0
+- cmake 3.16.3
+- Eigen 3.3
+
+### How to run the project
+```bash
+cd <path/to/hungarianAlgorithm>
+mkdir -p build && cd build
+cmake ..
+make
+./HUNGARIAN_ALGORITHM
+```
+
+## Alternatives
+
+### Algorithm workflow
+![Flow chart](images/hungarianAlgorithmFlow.png)
+
+### Implementation details
 - This module contains C++ implementation of the [Hungarian algorithm](https://web.eecs.umich.edu/~pettie/matching/Kuhn-hungarian-assignment.pdf). In perception domain, it is often used in `data association` step of object tracking.
-- The Hungarian algorithm solves the optimal assignment problem in polynomial time ~O(n<sup>3</sup>)
 - Eg : If the Cost of doing work for different workers can be tabulated as follows :
 
 | Worker / Task      | Task 1 | Task2 | Task3 | Task4 |
@@ -23,35 +72,6 @@
     - Added docstring and flowchart for better understanding of implementation
 - Theoretically, it solves the primal-dual optimization problem. [Reference : NPTEL operations research course](https://www.youtube.com/watch?v=BUGIhEecipE)
 
-## Algorithm workflow
-![Flow chart](images/hungarianAlgorithmFlow.png)
-
-## Requirements
-The code was developed on Ubuntu 20.04 LTS OS with
-- g++ 9.4.0
-- cmake 3.16.3
-- Eigen 3.3
-
-
-### How to run the project
-```bash
-cd <path/to/hungarianAlgorithm>
-mkdir -p build && cd build
-cmake ..
-make
-./HUNGARIAN_ALGORITHM
-```
-
-## Applications of Hungarian algorithm
-
-- It is used for solving **Data association problem in Object Tracking Applications** as explained in this [blog post](https://www.thinkautonomous.ai/blog/?p=hungarian-algorithm)
-- In the following image, we need to associate the detections from Lidar to detections in camera. Essentially, hungarian
-algorithm can be used to associate data from different sensors, so as to fuse them to get better estimations
-
-![Lidar and Camera Data Association](images/usecase.png)
-[Image reference](https://www.thinkautonomous.ai/blog/?p=hungarian-algorithm)
-
-- It's also one of the foundations for Algorithms like [`SORT (Simple Online and Realtime tracking)`](https://arxiv.org/pdf/1602.00763.pdf)
 
 ## References
 - [thinkautonomous blog post](https://www.thinkautonomous.ai/blog/?p=hungarian-algorithm)
