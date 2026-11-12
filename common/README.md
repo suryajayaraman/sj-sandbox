@@ -2,6 +2,7 @@
 
 ## Linear algebra
 - [Linear algebra concepts](linear_algebra/README.md)
+- [Stanford Machine Learning course](machine_learning/stanford_ml_notes.md)
 
 ## Loss functions
 - Cross Entropy ???
