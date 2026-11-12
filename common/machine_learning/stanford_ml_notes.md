@@ -133,3 +133,60 @@
     - For each exmaple, find closest clusters for each training example. Distance can be L2 norm or similar
     - Update cluster centroid
     - If a cluster centroid has not data point with it, elminate it
+- Optimization objective - to find ci (cluster index) for each data point, cluster centroid (mu i) for each cluster, such that distance is minimized for eachd data point to assigned cluster (**distortion function**)
+- If there are potentially smaller number of clusters (2-10), multiple random initializations is needed.
+- Choosing number of clusters is not straight-forward (older literature suggested `elbow method`, which determines the number of clusters at which cost function doesn't reduce). Not always recommended - depends on exact problem statement at hand.
+
+### Dimensionality reduction
+- Reduce dimensionality of the data. Eg: 2D data to 1D data.
+- Useful to remove redundant features (correlated ones are best removed)
+- Reduced features, need not make intuitive sense always.
+
+### PCA (Principal component Analysis)
+- Finding reduced features / dimensions vector, where distance between actual point and projected point is minimal.
+- Feature scaling and mean normalization is important. +ve, -ve directions doens't matter,
+- Useful for speeding up supervised learning setups, compressing large data (reducing memory footprint)
+- `PCA is not linear regression`.
+- Algorithm
+    - pre-processing - feature scaling and mean normalization. Replace raw features with scaled features
+    - Compute covariance matrix = (1/m) * X * X.T
+    - Compute eigence vectors of covariance matrix. [u,v,w] = svd(sigma)
+        - eig(sigma), symmetric +ve definite matrix -> covariance saitsifes that property
+        - U = nxn matrix, where n is the number of features in original input
+            - Choose 1st K vectors, that indicate first k important features
+        - z = [u1, u2, .... uk] = kxn matrix
+        - x_reduced = z" * x,
+- Reconstruction from reduced dimensions - the number of principal components `k` can be chosen, based on metrics - `avg squared projection error = rmse (x - x_approx) / |x|^2 < 0.01` - 99% of the variance is retained
+- Choosing k (number of principal components)
+    - Try PCA with k=1
+    - Compute U_reduced; z1-zm. Compute X_approx as well
+    - Check if rmse (x - x_approx) / |x|^2 < 0.01. If yes, exit
+    - else k +=1
+- `PCA should not be used to fix overfitting. Regularization is better`
+
+### Anomaly detection
+- Mostly unsupervised learning approaches
+- Example:
+    - classifying aircraft engines as faulty / non-faulty, based on number of measurements, got during testing stage
+    - Fraud detection - user actiity as input faetures
+    - Manufacturing - predicting which computer in data center, is most likely to fail
+- One approach is to assume input data is distributed normally
+    - Gaussian dstribution is limited by mean, covariance. Assuming input data is distributed normally, compute the mean, covarianced. When you get new data, you can check the likelihood that input data is an anomaly oor not P(x=new meaturemnent| 
+    mu, sigma)
+- Generally, anomaly detection will have limited number of positive samples. Eg: 20 samples of faulty engines and 10k good engines. Then, have 6k training samples, all with good engine data and compute the distribution of each feature. In CV set, 2k good engine samples, 10 anomaly engines. In test set, 2k good engine samples, 10 anomaly engines.
+- Common metrics - precision, recall, F1 score. **Need to be careful, as data will be heavily skewed in this case**
+- **Differences between Anomaly detection and Supervised learning**
+    - In anomaly detection, very small positive samples (y=1). So many things can go wrong. Any new feature can crop up. Hence, estimate p(y=0) and use that to filter anomalies
+    - In setups where we have comparable positive, negative samples, there is enough data for algorithm to estimate / predict the errors that can come
+- Choosing features - If we have non-Gaussian data, try transforming data (eg: log(x), X^-3)
+- Error analysis
+    - Manually check on CV, which examples were wrong.
+    - Check features, that take on, unusually large / small values in the event of an anomaly
+- Multi-variate Gaussian distrubtion - check for Correlatation between features
+
+### Recommendation systems
+- Example application: Movie recommendations
+- Possible solution - linear regression with regularization. Optimization can be done using gradient descent.
+- Collaborative filtering
+    - feature learning algorithm
+    
