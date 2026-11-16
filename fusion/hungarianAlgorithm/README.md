@@ -15,7 +15,6 @@ algorithm can be used to associate data from different sensors, so as to fuse th
 [Image reference](https://www.thinkautonomous.ai/blog/?p=hungarian-algorithm)
 
 - It's also one of the foundations for tracking algorithms like [SORT (Simple Online and Realtime tracking)](https://arxiv.org/pdf/1602.00763.pdf)
-- [scipy's linear_sum_assigment implementation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linear_sum_assignment.html) works for 2D rectangular assignment problems
 
 ## Pros
 - Guaranteed optimal results
@@ -31,10 +30,15 @@ algorithm can be used to associate data from different sensors, so as to fuse th
 ## Algorithm implementation
 
 ### Requirements
-The code was developed on Ubuntu 20.04 LTS OS with
-- g++ 9.4.0
-- cmake 3.16.3
-- Eigen 3.3
+The code was developed on Ubuntu 22.04 LTS OS with
+- g++ 11.4.0
+- cmake 3.22.1
+- Eigen 3.4.0
+
+```bash
+# installs dependencies
+sudo apt install -y build-essential cmake libeigen3-dev
+```
 
 ### How to run the project
 ```bash
@@ -42,36 +46,37 @@ cd <path/to/hungarianAlgorithm>
 mkdir -p build && cd build
 cmake ..
 make
-./HUNGARIAN_ALGORITHM
+./hungarian_algorithm
 ```
 
 ## Alternatives
 
-### Algorithm workflow
-![Flow chart](images/hungarianAlgorithmFlow.png)
+A Shortest Augmenting Path Algorithm for Dense and Sparse Linear Assignment Problems" by Roy Jonker and Ton Volgenant in 1987.
 
-### Implementation details
-- This module contains C++ implementation of the [Hungarian algorithm](https://web.eecs.umich.edu/~pettie/matching/Kuhn-hungarian-assignment.pdf). In perception domain, it is often used in `data association` step of object tracking.
-- Eg : If the Cost of doing work for different workers can be tabulated as follows :
 
-| Worker / Task      | Task 1 | Task2 | Task3 | Task4 |
-| -------------------| -------| ------| ------| ------|
-| Worker A           | 5      | 9     | 3     | 6     |
-| Worker B           | 8      | 7     | 8     | 2     |
-| Worker C           | 6      | 10    | 12    | 7     |
-| Worker D           | 3      | 10    | 8     | 6     |
+Jonker-Volgenant (LAPJV)	Small-to-medium dense matrices	Exact	Faster than Hungarian in practice
 
-- The optimal assignment for the above is
-    - Worker A -> Task 3
-    - Worker B -> Task 4
-    - Worker C -> Task 2
-    - Worker D -> Task 1
-- Total Optimal cost = 3 + 2 + 10 +3 = 18
-- The implementation is forked from [repo](https://github.com/mcximing/hungarian-algorithm-cpp) but has been improved upon by
+Auction Algorithm	Large sparse graphs & parallel setups	Exact (with ε-scaling)	Very fast on sparse/parallel hardware
+
+• Dual Initialization. Introduces fast column reduction, reduction transfer, and augmenting row reduction routines to establish a strong initial partial solution before path searching begins.
+• Shortest Augmenting Path. Uses a specialized implementation of Dijkstra's algorithm to find minimum-cost augmenting paths to unassigned columns, achieving O(N³) worst-case time complexity while outperforming the standard Hungarian (Kuhn-Munkres) method in practice.
+• Dense & Sparse Support. Adapts the data structures to handle both complete (dense) cost matrices and incomplete (sparse) graphs efficiently.
+
+
+- [scipy's linear_sum_assigment implementation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linear_sum_assignment.html) works for 2D rectangular assignment problems
+
+https://ms609.github.io/TreeDist/reference/LAPJV.html
+https://github.com/yongyanghz/LAPJV-algorithm-c/tree/master
+https://github.com/Bram94/lapjv/tree/master
+
+
+## Contributions from this repo
+- Implementation is forked from [repo](https://github.com/mcximing/hungarian-algorithm-cpp) but has been improved upon by
     - Using `Eigen` library for array operations
     - Added docstring and flowchart for better understanding of implementation
-- Theoretically, it solves the primal-dual optimization problem. [Reference : NPTEL operations research course](https://www.youtube.com/watch?v=BUGIhEecipE)
 
+## Algorithm workflow
+![Flow chart](images/hungarianAlgorithmFlow.png)
 
 ## References
 - [thinkautonomous blog post](https://www.thinkautonomous.ai/blog/?p=hungarian-algorithm)
