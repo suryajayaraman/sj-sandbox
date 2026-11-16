@@ -49,26 +49,24 @@ make
 ./hungarian_algorithm
 ```
 
-## Alternatives
-
-A Shortest Augmenting Path Algorithm for Dense and Sparse Linear Assignment Problems" by Roy Jonker and Ton Volgenant in 1987.
-
-
-Jonker-Volgenant (LAPJV)	Small-to-medium dense matrices	Exact	Faster than Hungarian in practice
-
-Auction Algorithm	Large sparse graphs & parallel setups	Exact (with ε-scaling)	Very fast on sparse/parallel hardware
-
-• Dual Initialization. Introduces fast column reduction, reduction transfer, and augmenting row reduction routines to establish a strong initial partial solution before path searching begins.
-• Shortest Augmenting Path. Uses a specialized implementation of Dijkstra's algorithm to find minimum-cost augmenting paths to unassigned columns, achieving O(N³) worst-case time complexity while outperforming the standard Hungarian (Kuhn-Munkres) method in practice.
-• Dense & Sparse Support. Adapts the data structures to handle both complete (dense) cost matrices and incomplete (sparse) graphs efficiently.
-
-
-- [scipy's linear_sum_assigment implementation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linear_sum_assignment.html) works for 2D rectangular assignment problems
-
-https://ms609.github.io/TreeDist/reference/LAPJV.html
-https://github.com/yongyanghz/LAPJV-algorithm-c/tree/master
-https://github.com/Bram94/lapjv/tree/master
-
+## Alternatives to Hungarian algorithm
+- `Jonker-Volgenant (LAPJV)` is most often used, instead of Hungarian algorithm, for linear assignment problems.
+- [scipy's linear_sum_assigment implementation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linear_sum_assignment.html) works for 2D rectangular assignment problems, and uses variation of Jonker Volgenant algorithm
+- Key changes
+    - Dual Initialization. Introduces fast column reduction, reduction transfer, and augmenting row reduction routines to establish a strong initial partial solution before path searching begins.
+    - Shortest Augmenting Path. Uses a specialized implementation of Dijkstra's algorithm to find minimum-cost augmenting paths to unassigned columns, achieving O(N³) worst-case time complexity while outperforming the standard Hungarian (Kuhn-Munkres) method in practice.
+    - Dense & Sparse Support. Adapts the data structures to handle both complete (dense) cost matrices and incomplete (sparse) graphs efficiently.
+- Related papers
+    - [Original Jonker Volgenant paper - A Shortest Augmenting Path Algorithm for Dense and Sparse Linear Assignment Problems]()
+    - [Followup paper - Jonker-Volgenant (LAPJV) Small-to-medium dense matrices	Exact Faster than Hungarian in practice]()
+- Reference implementations 
+    https://ms609.github.io/TreeDist/reference/LAPJV.html
+    https://github.com/yongyanghz/LAPJV-algorithm-c/tree/master
+    https://github.com/Bram94/lapjv/tree/master
+- Auction Algorithm
+    - Works for Large sparse graphs & parallel setups
+    - Exact (with ε-scaling)
+    - Very fast on sparse/parallel hardware
 
 ## Contributions from this repo
 - Implementation is forked from [repo](https://github.com/mcximing/hungarian-algorithm-cpp) but has been improved upon by
