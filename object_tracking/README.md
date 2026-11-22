@@ -1,4 +1,6 @@
-# Multi Object tracking using Deep Learning
+# Multi Object tracking
+
+## Tracking algorithms common to different modalities
 - [Common Object Tracking topics](common/README.md)
 - [SORT (Simple Online and Realtime Tracking)](SORT/README.md)
 - [ByteTrack algorithm](ByteTrack/README.md)

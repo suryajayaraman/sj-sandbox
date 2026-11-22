@@ -36,56 +36,37 @@ context of MOT`
 - Motion model used to propagate a target’s identity into the next frame.
 - `Approximate the inter-frame displacements of
 each object with a linear constant velocity model` which is independent of other objects and camera motion.
-- `x = [u, v, s, r, u̇, v̇, ṡ]`
-
-where
-
+- State vector (x) = `[u, v, s, r, u̇, v̇, ṡ]`, where
     - u = horizontal pixel location of the centre of the target bb
     - v = vertical pixel location of the centre of the target bb
     - s = scale (area) of targets's bb
     - r = aspect ratio of target's bb (assumed constant)
-
 - When a detection is associated to a target, the detected bounding box is used to update the target state where the velocity components are solved optimally via a Kalman
 filter framework.
-- If no detection is associated to the tar-
-get, its state is simply predicted without correction using the linear velocity model.
-
+- If no detection is associated to the target, its state is simply predicted without correction using the linear velocity model.
 
 ### 3.3 Data Association
-
-- `The assignment cost matrix is computed as the intersection-over-union (IOU) distance
-between each detection and all predicted bounding boxes
-from the existing targets, solved using the Hungarian algorithm`
+- The assignment cost matrix is computed as the intersection-over-union (IOU) between each detection and all predicted bounding boxes from the existing targets, solved using the Hungarian algorithm
 -  A minimum IOU is imposed to reject assignments where the detection to target overlap is less than IOU min.
-
-- `IOU distance of the bounding boxes
-implicitly handles short term occlusion caused by passing targets`
-- When a target is covered by an occluding
-object, only the occluder is detected. This allows both the occluder target to be corrected with the detec-
-tion while the covered target is unaffected as no assignment is made
+- IOU distance of the bounding boxes implicitly handles short term occlusion caused by passing targets.
+- When a target is covered by an occluding object, only the occluder is detected. This allows both the occluder target to be corrected with the detection while the covered target is unaffected as no assignment is made
 
 ### 3.4 Creation and Deletion of Track Identities
+- Unique identities need to be created or destroyed when objects enter and leave the image.
 
-- Unique identities need to be created or destroyed  when objects enter and leave the image.
-
-`Track Initialization`
+#### Track Initialization
 - Any detection with an overlap < IOU_min -> probability of an untracked object.
 - Tracker is initialised using the geometry of the bounding box with the velocity = 0.
 - As velocity = unobserved, large variance initializaiton for velocity
 - Probationary period for new tracker, where detections need to be assoicated to prevent tracking of
 false positives.
 
-
-`Track termination`
-- `Tracks Terminated if they are not detected for T_Lost
-frames`. It prevents exp.growth in the num of tracks caused by long durations of just prediction and no correction
+#### Track termination
+- Tracks Terminated if they are not detected for `T_Lost` frames. It prevents exp.growth in the num of tracks caused by long durations of just prediction and no correction
 - `T_Lost = 1` because:
     - cv = poor predictor
-    - onot bothered about object re-identification
-
+    - not bothered about object re-identification
 - Early deletion of lost targets -> **&uarr;**  efficiency. If an object reappears, tracking will implicitly resume under a new identity.
-
-
 
 ## 4 EXPERIMENTS
 - Test set of MOT2015 benchmark dataset
@@ -105,7 +86,7 @@ frames`. It prevents exp.growth in the num of tracks caused by long durations of
 - Frag(↓): number of fragmentations where a track is in-
 terrupted by miss detection.
 
-`Evaluation measures with (↑), higher scores denote better performance; while for evaluation measures with (↓), lower scores denote better performance`
+Evaluation measures with (↑), higher scores denote better performance; while for evaluation measures with (↓), lower scores denote better performance
 
 
 ### 4.2 Performance Evaluation

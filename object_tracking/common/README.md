@@ -4,4 +4,5 @@
 - Ablate detector confidence. Compare Box Tracking vs. Mask Tracking. Analyze failure cases (occlusion, missed detections).
 
 ## Metrics
-mAP, MOTA, IDF1, HOTA, ID switches
+- [Temporally local metrics for MOT](https://github.com/google-research/localmot)
+- mAP, MOTA, IDF1, HOTA, ID switches
