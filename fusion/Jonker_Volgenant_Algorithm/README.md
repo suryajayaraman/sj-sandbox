@@ -1,7 +1,7 @@
 ### Jonker-Volgenant algorithm
 - `Jonker-Volgenant (LAPJV)` is an algorithm to solve linear assignment problem. It's preferred instead of Hungarian algorithm, due to following reasons- **Hungarian algorithm performs substantial matrix-wide operations and repeated searches, particularly for larger problems. (it transforms the cost matrix, while preserving the optimal solution.)**
 
-## Algorithm 
+## Algorithm
 - JV uses the same underlying mathematical principle as the Hungarian algorithm, but changes how it searches for and maintains assignments.
 - Instead of repeatedly transforming the entire matrix to find zeros, JV works directly with reduced costs, dual variables, and augmenting paths. Its implementation is designed to avoid unnecessary operations. There are two important phases:
 - Phase 1 (Column reduction and reduction transfer)
@@ -32,9 +32,8 @@
 - [Linear and semi-assignment problems: A core oriented approach](https://www.sciencedirect.com/science/article/abs/pii/030505489600010X) - LAPMOD is the implementation for sparse matrices, that is much faster than the dense version
 
 
-## Reference implementations 
+## Reference implementations
 - [Public domain PASCAL implementation](http://www.assignmentproblems.com/LAPJV.htm) by A.Volgenant.
 - [LAP](https://github.com/gatagat/lap) is faster compared to scipy's implementation for square matrices.
 - [scipy's linear_sum_assigment implementation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.linear_sum_assignment.html) works for 2D rectangular assignment problems, and uses variation of Jonker Volgenant algorithm. [scipy lsap cpp code](https://github.com/scipy/scipy/blob/main/scipy/optimize/rectangular_lsap/rectangular_lsap.cpp). [Paper used in scipy](https://ieeexplore.ieee.org/document/7738348)
 - [C implementation of lapjv](https://github.com/yongyanghz/LAPJV-algorithm-c/tree/master)
-

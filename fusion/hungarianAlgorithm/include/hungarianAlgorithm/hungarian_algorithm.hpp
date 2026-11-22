@@ -9,9 +9,9 @@
 
 #pragma once
 
-#include <eigen3/Eigen/Dense> // for matrix operations
 #include <cfloat>             // for DBL_MAX
 #include <cmath>              // for fabs()
+#include <eigen3/Eigen/Dense> // for matrix operations
 #include <iostream>           // printing to console
 
 // useful typedefs
