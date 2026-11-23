@@ -1,11 +1,11 @@
-#include "hungarianAlgorithm/hungarian.h"
+#include <hungarianAlgorithm/hungarian_algorithm.hpp>
 #include <iostream>
 
 int main(int argc, char *argv[]) {
   // test inputs
   matXd costMtx(4, 4);
   costMtx << 5, 9, 3, 6, 8, 7, 8, 2, 6, 10, 12, 7, 3, 10, 8, 6;
-  std::cout << "costMtx = \n" << costMtx << "\n";
+  std::cout << "Input costMtx = \n" << costMtx << "\n";
   Eigen::VectorXi optimalAssgnVec{Eigen::VectorXi::Ones(costMtx.rows()) * -1};
 
   // create object to find optimal assignment

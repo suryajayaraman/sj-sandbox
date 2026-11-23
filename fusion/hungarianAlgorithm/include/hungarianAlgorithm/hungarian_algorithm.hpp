@@ -5,20 +5,13 @@
  * work is majorly a copy of the following amazing repo :
  * https://github.com/mcximing/hungarian-algorithm-cpp
  *
- * CHANGES FROM REFERENCE
- * 1. Implemented using `Eigen` library for Array operations
- * 2. Added docstring and comments for better understanding
- *
- * @version 0.1
- * @date 2022-04-22
- * @copyright Copyright (c) 2022
  */
-#ifndef _HUNGARIAN_H_
-#define _HUNGARIAN_H_
 
-#include "eigen3/Eigen/Dense" // for matrix operations
+#pragma once
+
 #include <cfloat>             // for DBL_MAX
 #include <cmath>              // for fabs()
+#include <eigen3/Eigen/Dense> // for matrix operations
 #include <iostream>           // printing to console
 
 // useful typedefs
@@ -209,5 +202,3 @@ private:
              vecXbool &coveredCols, vecXbool &coveredRows,
              Eigen::VectorXi &optimalAssgnVec);
 };
-
-#endif // _HUNGARIAN_H_

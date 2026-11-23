@@ -171,7 +171,7 @@
     - Fraud detection - user actiity as input faetures
     - Manufacturing - predicting which computer in data center, is most likely to fail
 - One approach is to assume input data is distributed normally
-    - Gaussian dstribution is limited by mean, covariance. Assuming input data is distributed normally, compute the mean, covarianced. When you get new data, you can check the likelihood that input data is an anomaly oor not P(x=new meaturemnent| 
+    - Gaussian dstribution is limited by mean, covariance. Assuming input data is distributed normally, compute the mean, covarianced. When you get new data, you can check the likelihood that input data is an anomaly oor not P(x=new meaturemnent|
     mu, sigma)
 - Generally, anomaly detection will have limited number of positive samples. Eg: 20 samples of faulty engines and 10k good engines. Then, have 6k training samples, all with good engine data and compute the distribution of each feature. In CV set, 2k good engine samples, 10 anomaly engines. In test set, 2k good engine samples, 10 anomaly engines.
 - Common metrics - precision, recall, F1 score. **Need to be careful, as data will be heavily skewed in this case**
@@ -189,4 +189,3 @@
 - Possible solution - linear regression with regularization. Optimization can be done using gradient descent.
 - Collaborative filtering
     - feature learning algorithm
-    

@@ -10,9 +10,9 @@ find_package (Eigen3 3.3 REQUIRED)
 # create Executable
 set(SOURCES
 	src/main.cpp
-	src/hungarian.cpp
+	src/hungarian_algorithm.cpp
    )
 
-add_executable(HUNGARIAN_ALGORITHM ${SOURCES})
-target_include_directories(HUNGARIAN_ALGORITHM PUBLIC include ${EIGEN_INCLUDE_DIR})
-target_link_libraries(HUNGARIAN_ALGORITHM Eigen3::Eigen)
+add_executable(hungarian_algorithm ${SOURCES})
+target_include_directories(hungarian_algorithm PUBLIC include ${EIGEN_INCLUDE_DIR})
+target_link_libraries(hungarian_algorithm Eigen3::Eigen)

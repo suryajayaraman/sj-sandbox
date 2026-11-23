@@ -1,4 +1,4 @@
-#include "hungarianAlgorithm/hungarian.h"
+#include <hungarianAlgorithm/hungarian_algorithm.hpp>
 
 /********************************************************/
 
