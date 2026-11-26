@@ -1,20 +1,21 @@
 ## ABSTRACT
-- Focus is to associate objects efficiently for online and realtime applications
+- Focus is to associate objects efficiently for online and realtime applications.
 - `Detection quality` = key factor influencing tracking performance, where changing the detector can improve tracking by up to **18.9%**
-- `Kalman Filter + Hungarian algorithm` for the tracking components, this
-approach achieves an accuracy comparable to SOTA online trackers.
-- Tracker updates at a rate of 260 Hz, 20x other SOTA trackers
-
+- `Kalman Filter + Hungarian algorithm` for the tracking components, this approach achieves an accuracy comparable to SOTA online trackers.
+- Tracker updates at a rate of 260 Hz, 20x other SOTA trackers.
 
 ## 1 INTRODUCTION
 - Online tracking where only detections from the previous and the current frame are presented to the tracker.
 - MOT = data association problem where the aim is to associate detections across frames in a video sequence by `modelling the motion and appearance of objects` in the scene
-- Appearance features beyond the detection component are ignored in tracking and only the bounding box position and size are used for both motion estimation and data association.
-- Issues regarding short-term and long-term occlusion are also ignored,
-as they occur very rarely and their explicit treatment introduces complexity
-- Only pedestrians are tracked
-- `CNN based detection in the
-context of MOT`
+- `Occum's razor` principle (a problem-solving principle stating that when competing explanations account for the same evidence, you should prefer the one requiring the fewest assumptions or entities).
+- Principles adopted in this paper
+    - `Detection quality` = key factor influencing tracking performance, where changing the detector can improve tracking by up to **18.9%**
+    - Appearance features beyond bounding box values are ignored.
+    - Short term and long-term occlusion handling ignored.
+    - Adding re-identification capability adds unncessary overhead to the tracking module.
+    - Relying on "CNNs" to handle detection issues directly, rather than making trackers more robust, by handling multiple edge cases.
+- `Kalman Filter + Hungarian algorithm` for the tracking components, this approach achieves an accuracy comparable to SOTA online trackers.
+- Tracker updates at a rate of 260 Hz, 20x other SOTA trackers.
 
 ## 2 LITERATURE SURVEY
 - `MHT` and `JPDA` used traditionally, but have `exponential complexity` in dynamic environments
@@ -34,22 +35,20 @@ context of MOT`
 
 ### 3.2 Estimation model
 - Motion model used to propagate a target’s identity into the next frame.
-- `Approximate the inter-frame displacements of
-each object with a linear constant velocity model` which is independent of other objects and camera motion.
+- `Approximate the inter-frame displacements of each object with a linear constant velocity model` which is independent of other objects and camera motion.
 - State vector (x) = `[u, v, s, r, u̇, v̇, ṡ]`, where
     - u = horizontal pixel location of the centre of the target bb
     - v = vertical pixel location of the centre of the target bb
     - s = scale (area) of targets's bb
     - r = aspect ratio of target's bb (assumed constant)
-- When a detection is associated to a target, the detected bounding box is used to update the target state where the velocity components are solved optimally via a Kalman
-filter framework.
+- When a detection is associated to a target, the detected bounding box is used to update the target state where the velocity components are solved optimally via a Kalman filter framework.
 - If no detection is associated to the target, its state is simply predicted without correction using the linear velocity model.
 
 ### 3.3 Data Association
 - The assignment cost matrix is computed as the intersection-over-union (IOU) between each detection and all predicted bounding boxes from the existing targets, solved using the Hungarian algorithm
 -  A minimum IOU is imposed to reject assignments where the detection to target overlap is less than IOU min.
 - IOU distance of the bounding boxes implicitly handles short term occlusion caused by passing targets.
-- When a target is covered by an occluding object, only the occluder is detected. This allows both the occluder target to be corrected with the detection while the covered target is unaffected as no assignment is made
+- When a target is covered by an occluding object, only the occluder is detected. This allows both the occluder target to be corrected with the detection while the covered target is unaffected as no assignment is made.
 
 ### 3.4 Creation and Deletion of Track Identities
 - Unique identities need to be created or destroyed when objects enter and leave the image.
@@ -57,12 +56,11 @@ filter framework.
 #### Track Initialization
 - Any detection with an overlap < IOU_min -> probability of an untracked object.
 - Tracker is initialised using the geometry of the bounding box with the velocity = 0.
-- As velocity = unobserved, large variance initializaiton for velocity
-- Probationary period for new tracker, where detections need to be assoicated to prevent tracking of
-false positives.
+- As velocity = unobserved, large variance initialization for velocity.
+- Probationary period for new tracker, where detections need to be assoicated to prevent tracking of false positives.
 
 #### Track termination
-- Tracks Terminated if they are not detected for `T_Lost` frames. It prevents exp.growth in the num of tracks caused by long durations of just prediction and no correction
+- Tracks Terminated if they are not detected for `T_Lost` frames. It prevents exp.growth in the num of tracks caused by long durations of just prediction and potentially incorrect predictions of state, due to no correction (detections) being available.
 - `T_Lost = 1` because:
     - cv = poor predictor
     - not bothered about object re-identification
@@ -75,19 +73,7 @@ false positives.
 
 
 ### 4.1 Metrics
-- MOTA(↑): Multi-object tracking accuracy
-- MOTP(↑): Multi-object tracking precision
-- FAF(↓): number of false alarms per frame.
-- MT(↑): number of mostly tracked trajectories. I.e. target has the same label for at least 80% of its life span.
-- ML(↓): number of mostly lost trajectories. i.e. target is not tracked for at least 20% of its life span.
-- FP(↓): number of false detections.
-- FN(↓): number of missed detections.
-- ID sw(↓): number of times an ID switches to a different previously tracked object.
-- Frag(↓): number of fragmentations where a track is in-
-terrupted by miss detection.
-
-Evaluation measures with (↑), higher scores denote better performance; while for evaluation measures with (↓), lower scores denote better performance
-
+- [Common MOT metrics](../common/README.md#metrics)
 
 ### 4.2 Performance Evaluation
 - SORT = highest MOTA score for the online trackers
